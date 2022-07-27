@@ -13,3 +13,5 @@ Vá para Frontend edite o arquivo .env:
     npm install
     npm run build
     npm start
+    
+    Erro no 'npm install', execultar npm install --legacy-peer-deps
