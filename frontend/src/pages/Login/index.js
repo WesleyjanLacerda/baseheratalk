@@ -23,18 +23,10 @@ import { i18n } from "../../translate/i18n";
 
 import { AuthContext } from "../../context/Auth/AuthContext";
 
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-     {"Copyleft "}
-      <Link color="inherit" href="https://herasis.com.br">
-        HeraSistemas - Talk
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-};
+import wave from './img/wave.png'
+import bg from './img/bg.svg'
+import avatar from './img/avatar.svg'
+import './style.css';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -74,78 +66,62 @@ const Login = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <img src="HeraTalk.png" width = "290px" alt=""/>
-        <Typography component="h1" variant="h1">
-          {i18n.t("")}
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handlSubmit}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label={i18n.t("login.form.email")}
-            name="email"
-            value={user.email}
-            onChange={handleChangeInput}
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label={i18n.t("login.form.password")}
-            id="password"
-            value={user.password}
-            onChange={handleChangeInput}
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword((e) => !e)}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            {i18n.t("login.buttons.submit")}
-          </Button>
-          <Grid container>
-            <Grid item>
-              <Link
-                href="#"
-                variant="body2"
-                component={RouterLink}
-                to="/signup"
-              >
-                {i18n.t("")}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>{<Copyright />}</Box>
-    </Container>
-  );
+    <>
+        <CssBaseline />
+        <img className="wave" src={wave} />
+        <div className="container">
+            <div className="img">
+                <img src={bg} />
+            </div>
+            <div className="login-content">
+                <form noValidate onSubmit={handlSubmit}>
+                <img src="HeraTalk.png" height = "150px" width = "290px"/>
+                    <TextField
+                        variant="standard"
+                        margin="normal"
+                        color="warning"
+                        required
+                        fullWidth
+                        id="email"
+                        label={i18n.t("login.form.email")}
+                        name="email"
+                        value={user.email}
+                        onChange={handleChangeInput}
+                        autoComplete="email"
+                        autoFocus
+                    />
+                    <TextField
+                        variant="standard"
+                        margin="normal"
+                      color="success"
+                        required
+                        fullWidth
+                        name="password"
+                        label={i18n.t("login.form.password")}
+                        id="password"
+                        value={user.password}
+                        onChange={handleChangeInput}
+                        autoComplete="current-password"
+                        type={showPassword ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword((e) => !e)}
+                                    >
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
+                    <input type="submit" className="btn" value="Acessar" />
+                </form>
+            </div>
+        </div>
+    </>
+);
 };
 
 export default Login;

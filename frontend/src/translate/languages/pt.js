@@ -275,8 +275,22 @@ const messages = {
         noTicketsTitle: "Nada aqui!",
         noTicketsMessage: "Nenhum ticket encontrado com esse status ou termo pesquisado",
         connectionTitle: "Conexão que está sendo utilizada atualmente.",
+        items:{
+          queueless: "Sem Setor",
+          accept: "Aceitar",
+          spy: "Espiar",
+          close: "Encerrar",
+          reopen: "Reabrir"
+        },
         buttons: {
           accept: "Aceitar",
+          acceptBeforeBot: "Aceitar",
+          start: "iniciar",
+          cancel: "Cancelar"
+        },
+        acceptModal: {
+          title: "Aceitar Chat",
+          queue: "Selecionar setor"
         },
       },
       newTicketModal: {
@@ -292,7 +306,7 @@ const messages = {
         listItems: {
           dashboard: "Dashboard",
           connections: "Conexões",
-          tickets: "Tickets",
+          tickets: "Conversas",
           contacts: "Contatos",
           quickAnswers: "Respostas Rápidas",
           queues: "Setores",
@@ -504,7 +518,7 @@ const messages = {
       },
       messageOptionsMenu: {
         delete: "Deletar",
-        reply: "Aceitar",
+        reply: "Responder",
         confirmationModal: {
           title: "Apagar mensagem?",
           message: "Esta ação não pode ser revertida.",

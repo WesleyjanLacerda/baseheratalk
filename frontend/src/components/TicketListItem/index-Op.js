@@ -15,18 +15,16 @@ import Divider from "@material-ui/core/Divider";
 import Badge from "@material-ui/core/Badge";
 import IconButton from '@material-ui/core/IconButton';
 import { i18n } from "../../translate/i18n";
-//import DoneIcon from '@material-ui/icons/Done';
+import DoneIcon from '@material-ui/icons/Done';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import ReplayIcon from '@material-ui/icons/Replay';
 import api from "../../services/api";
 import ClearOutlinedIcon from '@material-ui/icons/ClearOutlined';
+//import ButtonWithSpinner from "../ButtonWithSpinner";
 import MarkdownWrapper from "../MarkdownWrapper";
 import { Tooltip } from "@material-ui/core";
 import { AuthContext } from "../../context/Auth/AuthContext";
 import toastError from "../../errors/toastError";
-import ButtonWithSpinner from "../ButtonWithSpinner";
-
-//import AcceptTicketWithouSelectQueue from "../AcceptTicketWithoutQueueModal"; 
 
 const useStyles = makeStyles(theme => ({
 	ticket: {
@@ -66,7 +64,6 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	lastMessageTime: {
-		//justifySelf: "flex-end",
 		alignSelf: "center",
 		justifySelf: "flex-end",
 		marginLeft: "auto",
@@ -74,10 +71,6 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	closedBadge: {
-		//alignSelf: "center",
-		//justifySelf: "flex-end",
-		//marginRight: 32,
-		//marginLeft: "auto",
 		position: "absolute",
 		marginRight: 20,
 		right: 220,
@@ -92,82 +85,81 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	contactLastMessage: {
-		//paddingRight: 80,
 		paddingRight: 20,
-		paddingBottom: 6,
+		paddingBottom: 25,
 	},
 
 	newMessagesCount: {
 		position: "absolute",
-		left: "3%",
-		bottom: 45,
-		fontSize: "0.8em",
-		padding: 1,
-		paddingLeft: 2,
-		paddingRight: 2,
-		borderRadius: 5,
+		alignSelf: "center",
+		marginRight: 8,
+		marginLeft: "auto",
+		marginTop:"-60px",
+		left:"15px",
+		borderRadius:0,
 	},
 
 	bottomButton: {
-		top: "12px",
-		left: "3%",
+		top: "25px",
 	},
 
 	badgeStyle: {
 		color: "white",
-		backgroundColor: green[600],
-		fontSize: "0.8em",
-		width: -10,
+		backgroundColor: green[500],
 	},
 
-	acceptButton: { //botao aceitar
+	acceptButton: {
 		position: "absolute",
-		left: "0.5%",
-		bottom: 1,
-		fontSize: "0.8em",
-		padding: 1,
-		paddingLeft: 2,
-		paddingRight: 2,
-		borderRadius: 5,
+		left: "50%",
 	},
 
-	ticketQueueColor: { // Barra lateral do lado da foto nos tickets
-		flex: "none",
-		width: "8px",
-		height: "100%",
+	ticketQueueColor: {
 		position: "absolute",
-		top: "0%",
-		left: "0%",
-	},
-
-	userTag: { //nome do atendente
-		position: "absolute",
-		marginRight: 5,
-		right: 5,
-		bottom: 30,
-		//backgroundColor: theme.palette.background.default,
-		color: theme.palette.primary.main,
-		//border: "0.1px solid #F0F8FF",
+		marginRight: "auto",
+		marginLeft: "auto",
+		left: 10,
+		bottom: 5,
+		color: "#ffffff",
+		border: "1px solid #000000",
 		padding: 1,
 		paddingLeft: 5,
 		paddingRight: 5,
 		borderRadius: 10,
-		fontSize: "0.9em",
-		fontWeight: "900",
-		paddingBottom: 6,
+		fontSize: "0.9em"
 	},
-	WhatsTag: { //nome da Conexão do whatsapp
+
+	userTag: {
 		position: "absolute",
-		backgroundColor:  theme.palette.primary.main,
-		color: "#F0F8FF",
-		left: "11",
-		bottom: 3,
-		fontSize: "0.7em",
-		paddingLeft: 12,
-		paddingRight: 12,
-		borderRadius: 5,
-		height: 13
+		marginRight: "auto",
+		right: 5,
+		bottom: 55,
+		background: "#00a884",
+		color: "#ffffff",
+		border: "1px solid #000000",
+		padding: 1,
+		fontWeight: 'bold',
+		paddingLeft: 5,
+		paddingRight: 5,
+		borderRadius: 10,
+		fontSize: "0.9em"
 	},
+
+	userTagName: {
+		position: "absolute",
+		marginRight: "auto",
+		left: 100,
+		bottom: 5,
+		background: "#002060",
+		color: "#ffffff",
+		border: "1px solid #000000",
+		padding: 1,
+		fontWeight: 'bold',
+		paddingLeft: 5,
+		paddingRight: 5,
+		borderRadius: 10,
+		fontSize: "0.9em"
+	},
+
 }));
 
 const TicketListItem = ({ ticket }) => {
@@ -177,57 +169,32 @@ const TicketListItem = ({ ticket }) => {
 	const { ticketId } = useParams();
 	const isMounted = useRef(true);
 	const { user } = useContext(AuthContext);
-	const [acceptTicketWithouSelectQueueOpen, setAcceptTicketWithouSelectQueueOpen] = useState(false);
+	const [whapi, setWHAPI] = useState(null);
+
+if (ticket.status === "pending") {
+} else {
+const fetchWHAPI = async () => {
+	try {
+	  const { data } = await api.get("/users/" + ticket.userId, {
+	  });
+	  setWHAPI(data['name']);
+	} catch (err) {
+	  toastError(err);
+	}
+  };
+
+fetchWHAPI();
+}
 
 	useEffect(() => {
 		return () => {
 			isMounted.current = false;
 		};
 	}, []);
-			// Nome Responsável  *********************************************************************************************************************
-	const [zdg, setZDG] = useState(null);
-
-	if (ticket.status === "pending"){
-
-	} else {
-
-	const fetchZDG = async () => {
-		try {
-			const { data } = await api.get("/users/" + ticket.userId, {
-			});
-			setZDG(data['name']);
-		} catch (err) {
-			toastError(err);
-		}
-		};
-	fetchZDG();
-	}
 
 	const handleAcepptTicket = async id => {
 		setLoading(true);
 		try {
-			// Abrir Chamado *********************************************************************************************************************
-			var myHeaders = new Headers();
-			myHeaders.append("Content-Type", "application/json");
-				
-			let _data = JSON.stringify({
-				usuario: user.name,
-				telefone: ticket.contact.number,
-				email: user.email,
-				ticket: id
-			})
-
-			var requestOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: _data,
-			redirect: 'follow'
-			};
-			fetch('https://heradash.bubbleapps.io/api/1.1/wf/aceitar/', requestOptions)
-			.then(response => response.text())
-			.then(result => console.log(result))
-			.catch(error => console.log('error', error));
-			//***********************************************************************************************************************************
 			await api.put(`/tickets/${id}`, {
 				status: "open",
 				userId: user?.id,
@@ -289,53 +256,12 @@ const TicketListItem = ({ ticket }) => {
 		if (isMounted.current) {
 			setLoading(false);
 		}
-		// history.push(`/tickets/${id}`);
+		//history.push(`/tickets/${id}`);
 	};
 
 
 	const handleSelectTicket = id => {
 		history.push(`/tickets/${id}`);
-		//**************************************************
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
-
-		let _data = JSON.stringify({
-		usuario: user.name,
-		telefone: ticket.contact.number,
-		email: user.email, 
-		ticket: id
-		})
-
-		var requestOptions = {
-		method: 'POST',
-		headers: myHeaders,
-		body: _data,
-		redirect: 'follow'
-		};
-		fetch('https://heradash.bubbleapps.io/api/1.1/wf/clique/', requestOptions)
-		.then(response => response.text())
-		.then(result => console.log(result))
-		.catch(error => console.log('error', error));
-		//**************************************************
-	};
-
-	const queueName = selectedTicket => {
-		let name = null;
-		let color = null;
-		user.queues.forEach(userQueue => {
-			if (userQueue.id === selectedTicket.queueId) {
-				name = userQueue.name;
-				color = userQueue.color;
-			}
-		});
-		return {
-			name,
-			color
-		};
-	}
-	
-	const handleOpenAcceptTicketWithouSelectQueue = () => {
-		setAcceptTicketWithouSelectQueueOpen(true);
 	};
 
 	return (
@@ -349,23 +275,26 @@ const TicketListItem = ({ ticket }) => {
 				}}
 				selected={ticketId && +ticketId === ticket.id}
 				className={clsx(classes.ticket, {
-					[classes.pendingTicket]: (ticket.status === "pending"),
+					[classes.pendingTicket]: ticket.status === "pending",
 				})}
 			>
 				<Tooltip
 					arrow
 					placement="right"
-					title={ticket.queue?.name || queueName(ticket)?.name || "Sem fila"}
+					title={ticket.queue?.name || "Sem fila"}
 				>
 					<span
-						style={{ backgroundColor: ticket.queue?.color || queueName(ticket)?.color || "#7C7C7C" }}
+						style={{ backgroundColor: ticket.queue?.color || "#7C7C7C" }}
 						className={classes.ticketQueueColor}
-					></span>
+					>
+						{ticket.queue?.name || "Sem fila"}
+					</span>
 				</Tooltip>
 				<ListItemAvatar>
-					<Avatar src={ticket?.contact?.profilePicUrl} />
+				<Avatar style={{ marginTop: '-14px', marginLeft: '4px' }} src={ticket?.contact?.profilePicUrl} />
 				</ListItemAvatar>
 				<ListItemText
+				className={classes.cardBottom}
 					disableTypography
 					primary={
 						<span className={classes.contactNameWrapper}>
@@ -378,11 +307,12 @@ const TicketListItem = ({ ticket }) => {
 								{ticket.contact.name}
 							</Typography>
 							{ticket.status === "closed" && (
-							<Badge
-								className={classes.closedBadge}
-								badgeContent={"Encerrada"}
-								color="primary"
-							/>
+								<Badge
+									className={classes.closedBadge}
+									style={{right: '10px'}}
+									badgeContent={"closed"}
+									color="primary"
+								/>
 							)}
 							{ticket.lastMessage && (
 								<Typography
@@ -398,14 +328,10 @@ const TicketListItem = ({ ticket }) => {
 									)}
 								</Typography>
 							)}
-							{ticket.whatsapp && (
-								<div className={classes.userTag} title={i18n.t("ticketsList.connectionTitle")}>{zdg}</div>
-							)}
 							{ticket.whatsappId && (
-								
-								<div className={classes.WhatsTag} 
-									title={i18n.t("ticketsList.connectionTitle")}>{ticket.whatsapp?.name}</div>
+								<div className={classes.userTag} title={i18n.t("ticketsList.connectionTitle")}> {ticket.whatsapp?.name}</div>
 							)}
+							<div className={classes.userTagName} title={i18n.t("messagesList.header.assignedTo")} >{i18n.t("messagesList.header.assignedTo")} {whapi} </div>
 						</span>
 					}
 					secondary={
@@ -435,59 +361,44 @@ const TicketListItem = ({ ticket }) => {
 					}
 				/>
 				{ticket.status === "pending" && (
-					<Tooltip title={i18n.t("Aceitar")}>
-					<ButtonWithSpinner
+					<IconButton
+						className={classes.bottomButton}
 						color="primary"
-						variant="contained"
-						className={classes.acceptButton}
-						loading={loading}
-						onClick={e => handleAcepptTicket(ticket.id)}
-						>
-						{i18n.t("ticketsList.buttons.accept")}
-					</ButtonWithSpinner>
-					</Tooltip>
+						onClick={e => handleAcepptTicket(ticket.id)} >
+						<DoneIcon />
+					</IconButton>
 				)}
-				{ticket.status === "pending" && ( // Visualizar Pendente
-					<Tooltip title={i18n.t("Visualizar")}>
-						<IconButton
-							className={classes.bottomButton}
-							size="small"
-							color="primary"
-							onClick={e => handleViewTicket(ticket.id)} >
-							<VisibilityIcon />
-						</IconButton>
-					</Tooltip>
+				{ticket.status === "pending" && (
+					<IconButton
+						className={classes.bottomButton}
+						color="primary"
+						onClick={e => handleViewTicket(ticket.id)} >
+						<VisibilityIcon />
+					</IconButton>
 				)}
-				{ticket.status === "pending" && ( // Encerrar de quando
-					<Tooltip title={i18n.t("Encerrar")}>
-						<IconButton
-							className={classes.bottomButton}
-							color="primary"
-							onClick={e => handleClosedTicket(ticket.id)} >
-							<ClearOutlinedIcon />
-						</IconButton>
-					</Tooltip>
+				{ticket.status === "pending" && (
+					<IconButton
+						className={classes.bottomButton}
+						color="primary"
+						onClick={e => handleClosedTicket(ticket.id)} >
+						<ClearOutlinedIcon />
+					</IconButton>
 				)}
 				{ticket.status === "open" && (
-					<Tooltip title={i18n.t("Reabrir")}>
-						<IconButton
-							className={classes.bottomButton}
-							size="small"
-							color="primary"
-							onClick={e => handleViewTicket(ticket.id)} >
-							<ReplayIcon />
-						</IconButton>
-					</Tooltip>
+					<IconButton
+						className={classes.bottomButton}
+						color="primary"
+						onClick={e => handleViewTicket(ticket.id)} >
+						<ReplayIcon />
+					</IconButton>
 				)}
-				{ticket.status === "open" && ( //Botão encerrar a lista de Tickets
-					<Tooltip title={i18n.t("Encerrar")}>
-						<IconButton 
-							className={classes.bottomButton}
-							color="primary"
-							onClick={e => handleClosedTicket(ticket.id)} >
-							<ClearOutlinedIcon />
-						</IconButton>
-					</Tooltip>
+				{ticket.status === "open" && (
+					<IconButton
+						className={classes.bottomButton}
+						color="primary"
+						onClick={e => handleClosedTicket(ticket.id)} >
+						<ClearOutlinedIcon />
+					</IconButton>
 				)}
 				{ticket.status === "closed" && (
 					<IconButton

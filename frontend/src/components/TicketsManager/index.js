@@ -171,7 +171,16 @@ const TicketsManager = () => {
         <Tab
             value={"open"}
             icon={<MoveToInboxIcon />}
-            label={i18n.t("tickets.tabs.open.title")}
+            //label={i18n.t("tickets.tabs.open.title")}
+            label={
+              <Badge
+              className={classes.badge}
+              badgeContent={openCount}
+              color="primary" // Cor do contato de Tickets
+          >
+              {i18n.t("tickets.tabs.open.title")}
+          </Badge>
+          }
             classes={{ root: classes.tab }}
         />
         <Tab
@@ -181,7 +190,7 @@ const TicketsManager = () => {
                 <Badge
                 className={classes.badge}
                 badgeContent={pendingCount}
-                color="secondary"
+                color="primary" // Cor do contato de Tickets
             >
                 {i18n.t("ticketsList.pendingHeader")}
             </Badge>
