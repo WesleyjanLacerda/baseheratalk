@@ -8,7 +8,7 @@ Vá para a pasta backend e edite o arquivo .env:
     npx sequelize db:seed:all
     npm start
 
-    Erro no npm run buil: npm i @adiwajshing/baileys@4.2.0
+    Erro no npm run buil: npm install @adiwajshing/baileys@4.3.0
 
 Vá para Frontend edite o arquivo .env:
 
