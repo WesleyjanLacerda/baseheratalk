@@ -17,3 +17,4 @@ Vá para Frontend edite o arquivo .env:
     npm start
     
     Erro no 'npm install', execultar npm install --legacy-peer-deps
+    ou npm i material-ui-color
