@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 
 import { makeStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
@@ -74,10 +74,10 @@ const useStyles = makeStyles(theme => ({
 const reducer = (state, action) => {
 	if (action.type === "LOAD_TICKETS") {
 		const newTickets = action.payload;
-		
+
 		newTickets.forEach(ticket => {
 			const ticketIndex = state.findIndex(t => t.id === ticket.id);
-			if (ticketIndex !== -1 ) {
+			if (ticketIndex !== -1) {
 				state[ticketIndex] = ticket;
 				if (ticket.unreadMessages > 0) {
 					state.unshift(state.splice(ticketIndex, 1)[0]);
@@ -171,6 +171,7 @@ const reducer = (state, action) => {
 		status,
 		showAll,
 		queueIds: JSON.stringify(selectedQueueIds),
+		isGroup: status === "group" ? true : false
 	});
 
 	useEffect(() => {
@@ -181,8 +182,9 @@ const reducer = (state, action) => {
 		});
 	}, [tickets, status, searchParam]);
 
+
 	useEffect(() => {
-		const socket = openSocket();
+		const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
 		const shouldUpdateTicket = ticket =>
 			(!ticket.userId || ticket.userId === user?.id || showAll) &&
@@ -223,6 +225,7 @@ const reducer = (state, action) => {
 			}
 		});
 
+		if (status) {
 		socket.on("appMessage", data => {
 			if (data.action === "create" && shouldUpdateTicket(data.ticket)) {
 				dispatch({
@@ -240,6 +243,7 @@ const reducer = (state, action) => {
 				});
 			}
 		});
+	}
 
 		return () => {
 			socket.disconnect();
@@ -250,8 +254,7 @@ const reducer = (state, action) => {
     if (typeof updateCount === "function") {
       updateCount(ticketsList.length);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ticketsList]);
+	  }, [ticketsList, updateCount]);
 
 	const loadMore = () => {
 		setPageNumber(prevState => prevState + 1);
@@ -276,7 +279,7 @@ const reducer = (state, action) => {
 				className={classes.ticketsList}
 				onScroll={handleScroll}
 			>
-				<List style={{ paddingTop: 0 }}>
+				<List style={{ paddingTop: 0, marginBottom: 65 }}>
 					{ticketsList.length === 0 && !loading ? (
 						<div className={classes.noTicketsDiv}>
 							<span className={classes.noTicketsTitle}>

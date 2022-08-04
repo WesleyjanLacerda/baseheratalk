@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 
 import { toast } from "react-toastify";
 
@@ -71,7 +71,7 @@ const useAuth = () => {
 	}, []);
 
 	useEffect(() => {
-		const socket = openSocket();
+		const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
 		socket.on("user", data => {
 			if (data.action === "update" && data.user.id === user.id) {
@@ -90,6 +90,7 @@ const useAuth = () => {
 		try {
 			const { data } = await api.post("/auth/login", userData);
 			localStorage.setItem("token", JSON.stringify(data.token));
+			localStorage.setItem("user-id", data.user.id);
 			api.defaults.headers.Authorization = `Bearer ${data.token}`;
 			setUser(data.user);
 			setIsAuth(true);
@@ -110,6 +111,7 @@ const useAuth = () => {
 			setIsAuth(false);
 			setUser({});
 			localStorage.removeItem("token");
+			localStorage.removeItem("user-id");
 			api.defaults.headers.Authorization = undefined;
 			setLoading(false);
 			history.push("/login");

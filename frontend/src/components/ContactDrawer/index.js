@@ -10,7 +10,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
-
+import ContactMailIcon from "@material-ui/icons/ContactMail";
+import WhatsAppIcon from "@material-ui/icons/WhatsApp";
 import { i18n } from "../../translate/i18n";
 
 import ContactModal from "../ContactModal";
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 	header: {
 		display: "flex",
 		borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-		backgroundColor: theme.palette.background.default,
+		backgroundColor: "#eee",
 		alignItems: "center",
 		padding: theme.spacing(0, 1),
 		minHeight: "73px",
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	content: {
 		display: "flex",
-		backgroundColor: theme.palette.background.paper,
+		backgroundColor: "#eee",
 		flexDirection: "column",
 		padding: "8px 0px 8px 8px",
 		height: "100%",
@@ -54,8 +55,8 @@ const useStyles = makeStyles(theme => ({
 
 	contactAvatar: {
 		margin: 15,
-		width: 160,
-		height: 160,
+		width: 260, // Tamanho foto do contato
+		height: 260,
 	},
 
 	contactHeader: {
@@ -122,14 +123,12 @@ const ContactDrawer = ({ open, handleDrawerClose, contact, loading }) => {
 						></Avatar>
 
 						<Typography>{contact.name}</Typography>
-						<Typography>
-							<Link href={`tel:${contact.number}`}>{contact.number}</Link>
-						</Typography>
-						{contact.email && (
-							<Typography>
-								<Link href={`mailto:${contact.email}`}>{contact.email}</Link>
-							</Typography>	
-						)}
+						<Button href={`tel:${contact.number}`} variant="contained" startIcon={<WhatsAppIcon />}>
+                            {contact.number}
+                        </Button>
+						<Button href={`mailto:${contact.email}`} variant="contained" startIcon={<ContactMailIcon />}>
+                            {contact.email}
+                        </Button>
 						<Button
 							variant="outlined"
 							color="primary"

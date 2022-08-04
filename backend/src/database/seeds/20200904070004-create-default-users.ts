@@ -6,9 +6,10 @@ module.exports = {
       "Users",
       [
         {
-          name: "HeraTalk",
-          email: "admin@heratalk.com.br",
-          passwordHash: "$2a$08$TyusqU6f/uTqOa3L.qW/RuFRiXuyW/CjT6213Dc1ddKzKZn7VIVRO",
+          name: "Administrador",
+          email: "admin@whatsatende.com.br",
+          passwordHash:
+            "$2a$08$WaEmpmFDD/XkDqorkpQ42eUZozOqRCPkPcTkmHHMyuTGUOkI8dHsq",
           profile: "admin",
           tokenVersion: 0,
           createdAt: new Date(),

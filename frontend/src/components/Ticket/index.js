@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 import clsx from "clsx";
 
 import { Paper, makeStyles } from "@material-ui/core";
+import { TagsContainer } from "../TagsContainer";
 
 import ContactDrawer from "../ContactDrawer";
 import MessageInput from "../MessageInput/";
@@ -21,7 +22,6 @@ const drawerWidth = 320;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
     display: "flex",
     height: "100%",
     position: "relative",
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   ticketInfo: {
-    backgroundColor: theme.palette.background.default,
     maxWidth: "50%",
     flexBasis: "50%",
     [theme.breakpoints.down("sm")]: {
@@ -38,9 +37,10 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   ticketActionButtons: {
-    backgroundColor: theme.palette.background.default,
     maxWidth: "50%",
     flexBasis: "50%",
+    left: "-50px",
+    position: "relative",
     display: "flex",
     [theme.breakpoints.down("sm")]: {
       maxWidth: "100%",
@@ -107,7 +107,7 @@ const Ticket = () => {
   }, [ticketId, history]);
 
   useEffect(() => {
-    const socket = openSocket();
+    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
     socket.on("connect", () => socket.emit("joinChatBox", ticketId));
 
@@ -117,7 +117,7 @@ const Ticket = () => {
       }
 
       if (data.action === "delete") {
-        toast.success("Ticket deleted sucessfully.");
+        toast.success("Conversa deletada com sucesso!");
         history.push("/tickets");
       }
     });
@@ -167,6 +167,9 @@ const Ticket = () => {
             <TicketActionButtons ticket={ticket} />
           </div>
         </TicketHeader>
+        <Paper>
+          <TagsContainer ticket={ticket} />
+        </Paper>
         <ReplyMessageProvider>
           <MessagesList
             ticketId={ticketId}

@@ -12,38 +12,20 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          key: "CheckMsgIsGroup",
+          key: "call",
           value: "enabled",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "call",
-          value: "disabled",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          key: "sideMenu",
-          value: "disabled",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
           key: "timeCreateNewTicket",
-          value: "10",
+          value: "43200",
           createdAt: new Date(),
           updatedAt: new Date()
         },
         {
-          key: "closeTicketApi",
-          value: "disabled",
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        {
-          key: "darkMode",
-          value: "disabled",
+          key: "CheckMsgIsGroup",
+          value: "enabled",
           createdAt: new Date(),
           updatedAt: new Date()
         }

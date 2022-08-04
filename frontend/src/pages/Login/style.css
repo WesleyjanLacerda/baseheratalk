@@ -37,6 +37,7 @@ body{
 	justify-content: flex-start;
 	align-items: center;
 	text-align: center;
+	width: 290px;
 }
 
 .img img{

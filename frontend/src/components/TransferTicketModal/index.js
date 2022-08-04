@@ -103,6 +103,7 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid, ticketWhatsappId })
 
 			if (selectedUser) {
 				data.userId = selectedUser.id
+				data.transf = true;
 			}
 
 			if (selectedQueue && selectedQueue !== null) {
@@ -111,11 +112,11 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid, ticketWhatsappId })
 				if (!selectedUser) {
 					data.status = 'pending';
 					data.userId = null;
-					data.transf = true;
+				    data.transf = true;
 				}
 			}
 
-			if(selectedWhatsapp) {
+			if (selectedWhatsapp) {
 				data.whatsappId = selectedWhatsapp;
 			}
 
@@ -190,23 +191,23 @@ const TransferTicketModal = ({ modalOpen, onClose, ticketid, ticketWhatsappId })
 						</Select>
 					</FormControl>
 					<Can
-						role={loggedInUser.profile}
-						perform="ticket-options:transferWhatsapp"
-						yes={() => (!loadingWhatsapps && 
-							<FormControl variant="outlined" className={classes.maxWidth} style={{ marginTop: 20 }}>
-								<InputLabel>{i18n.t("transferTicketModal.fieldConnectionLabel")}</InputLabel>
-								<Select
-									value={selectedWhatsapp}
-									onChange={(e) => setSelectedWhatsapp(e.target.value)}
-									label={i18n.t("transferTicketModal.fieldConnectionPlaceholder")}
-								>
-									{whatsApps.map((whasapp) => (
-										<MenuItem key={whasapp.id} value={whasapp.id}>{whasapp.name}</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						)}
-					/>
+					role={loggedInUser.profile}
+					perform="ticket-options:transferWhatsapp"
+					yes={() => (!loadingWhatsapps && 
+						<FormControl variant="outlined" className={classes.maxWidth} style={{ marginTop: 20 }}>
+							<InputLabel>{i18n.t("transferTicketModal.fieldConnectionLabel")}</InputLabel>
+							<Select
+								value={selectedWhatsapp}
+								onChange={(e) => setSelectedWhatsapp(e.target.value)}
+								label={i18n.t("transferTicketModal.fieldConnectionPlaceholder")}
+							>
+								{whatsApps.map((whasapp) => (
+									<MenuItem key={whasapp.id} value={whasapp.id}>{whasapp.name}</MenuItem>
+								))}
+							</Select>
+						</FormControl>
+					)}
+				/>
 				</DialogContent>
 				<DialogActions>
 					<Button

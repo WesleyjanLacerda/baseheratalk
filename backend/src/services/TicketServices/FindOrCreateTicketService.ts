@@ -1,24 +1,32 @@
-// import { subHours } from "date-fns";
-const add = require('date-fns/add');
+import { subHours } from "date-fns";
 import { Op } from "sequelize";
 import Contact from "../../models/Contact";
 import Ticket from "../../models/Ticket";
 import ShowTicketService from "./ShowTicketService";
-import ListSettingsServiceOne from "../SettingServices/ListSettingsServiceOne";
 
-const FindOrCreateTicketService = async (
-  contact: Contact,
-  whatsappId: number,
-  unreadMessages: number,
-  groupContact?: Contact
-): Promise<Ticket> => {
+interface IRequest {
+  contact: Contact;
+  whatsappId?: number;
+  unreadMessages?: number;
+  channel?: string;
+  groupContact?: Contact;
+}
+
+const FindOrCreateTicketService = async ({
+  contact,
+  whatsappId,
+  unreadMessages,
+  channel,
+  groupContact
+}: IRequest): Promise<Ticket> => {
   let ticket = await Ticket.findOne({
     where: {
       status: {
         [Op.or]: ["open", "pending"]
       },
       contactId: groupContact ? groupContact.id : contact.id,
-      whatsappId: whatsappId
+      whatsappId,
+      channel
     }
   });
 
@@ -30,7 +38,8 @@ const FindOrCreateTicketService = async (
     ticket = await Ticket.findOne({
       where: {
         contactId: groupContact.id,
-        whatsappId: whatsappId
+        whatsappId,
+        channel
       },
       order: [["updatedAt", "DESC"]]
     });
@@ -39,23 +48,21 @@ const FindOrCreateTicketService = async (
       await ticket.update({
         status: "pending",
         userId: null,
-        unreadMessages
+        unreadMessages,
+        channel
       });
     }
   }
 
   if (!ticket && !groupContact) {
-    const listSettingsService = await ListSettingsServiceOne({key: "timeCreateNewTicket"});
-    var timeCreateNewTicket = listSettingsService?.value;
-
-
     ticket = await Ticket.findOne({
       where: {
         updatedAt: {
-          [Op.between]: [+add(new Date(), {seconds: timeCreateNewTicket}), +new Date()]
+          [Op.between]: [+subHours(new Date(), 2), +new Date()]
         },
         contactId: contact.id,
-        whatsappId: whatsappId
+        whatsappId,
+        channel
       },
       order: [["updatedAt", "DESC"]]
     });
@@ -64,7 +71,8 @@ const FindOrCreateTicketService = async (
       await ticket.update({
         status: "pending",
         userId: null,
-        unreadMessages
+        unreadMessages,
+        channel
       });
     }
   }
@@ -75,6 +83,7 @@ const FindOrCreateTicketService = async (
       status: "pending",
       isGroup: !!groupContact,
       unreadMessages,
+      channel,
       whatsappId
     });
   }

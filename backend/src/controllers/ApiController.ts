@@ -13,12 +13,10 @@ import CheckContactNumber from "../services/WbotServices/CheckNumber";
 import GetProfilePicUrl from "../services/WbotServices/GetProfilePicUrl";
 import SendWhatsAppMedia from "../services/WbotServices/SendWhatsAppMedia";
 import SendWhatsAppMessage from "../services/WbotServices/SendWhatsAppMessage";
-import UpdateTicketService from "../services/TicketServices/UpdateTicketService";
-import ListSettingsServiceOne from "../services/SettingServices/ListSettingsServiceOne";
 
 type WhatsappData = {
   whatsappId: number;
-}
+};
 
 type MessageData = {
   body: string;
@@ -64,11 +62,12 @@ const createContact = async (
     }
   }
 
-  const createTicket = await FindOrCreateTicketService(
+  const createTicket = await FindOrCreateTicketService({
+    whatsappId: whatsapp.id,
     contact,
-    whatsapp.id,
-    1
-  );
+    unreadMessages: 0,
+    channel: "whatsapp"
+  });
 
   const ticket = await ShowTicketService(createTicket.id);
 
@@ -99,28 +98,15 @@ export const index = async (req: Request, res: Response): Promise<Response> => {
 
   const contactAndTicket = await createContact(whatsappId, newContact.number);
 
-  let resp: any;
-
   if (medias) {
     await Promise.all(
       medias.map(async (media: Express.Multer.File) => {
-        resp = await SendWhatsAppMedia({ body, media, ticket: contactAndTicket });
+        await SendWhatsAppMedia({ body, media, ticket: contactAndTicket });
       })
     );
   } else {
-    resp = await SendWhatsAppMessage({ body, ticket: contactAndTicket, quotedMsg });
+    await SendWhatsAppMessage({ body, ticket: contactAndTicket, quotedMsg });
   }
 
-  const listSettingsService = await ListSettingsServiceOne({ key: "closeTicketApi" });
-  var closeTicketApi = listSettingsService?.value;
-
-  if (closeTicketApi === 'enabled') {
-    setTimeout(async () => {
-      await UpdateTicketService({
-        ticketId: contactAndTicket.id,
-        ticketData: { status: "closed" }
-      });
-    }, 1000);
-  }
-  return res.send({ error: resp });
+  return res.send();
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import QRCode from "qrcode.react";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 import toastError from "../../errors/toastError";
 
 import { Dialog, DialogContent, Paper, Typography } from "@material-ui/core";
@@ -26,7 +26,7 @@ const QrcodeModal = ({ open, onClose, whatsAppId }) => {
 
 	useEffect(() => {
 		if (!whatsAppId) return;
-		const socket = openSocket();
+		const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
 		socket.on("whatsappSession", data => {
 			if (data.action === "update" && data.session.id === whatsAppId) {
@@ -45,8 +45,8 @@ const QrcodeModal = ({ open, onClose, whatsAppId }) => {
 
 	return (
 		<Dialog open={open} onClose={onClose} maxWidth="lg" scroll="paper">
-			<DialogContent style={{background: '#ffffff'}}>
-				<Paper elevation={0} style={{background: '#ffffff'}}>
+			<DialogContent>
+				<Paper elevation={0}>
 					<Typography color="primary" gutterBottom>
 						{i18n.t("qrCode.message")}
 					</Typography>

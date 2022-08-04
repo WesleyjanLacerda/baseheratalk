@@ -11,6 +11,7 @@ interface Request {
   number: string;
   isGroup: boolean;
   email?: string;
+  commandBot?: string;
   profilePicUrl?: string;
   extraInfo?: ExtraInfo[];
 }
@@ -21,6 +22,7 @@ const CreateOrUpdateContactService = async ({
   profilePicUrl,
   isGroup,
   email = "",
+  commandBot = "",
   extraInfo = []
 }: Request): Promise<Contact> => {
   const number = isGroup ? rawNumber : rawNumber.replace(/[^0-9]/g, "");
@@ -43,6 +45,7 @@ const CreateOrUpdateContactService = async ({
       number,
       profilePicUrl,
       email,
+      commandBot,
       isGroup,
       extraInfo
     });

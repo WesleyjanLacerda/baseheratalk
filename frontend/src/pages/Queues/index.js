@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useState } from "react";
 
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 
 import {
   Button,
@@ -111,7 +111,7 @@ const Queues = () => {
   }, []);
 
   useEffect(() => {
-    const socket = openSocket();
+    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
     socket.on("queue", (data) => {
       if (data.action === "update" || data.action === "create") {
@@ -151,7 +151,7 @@ const Queues = () => {
   const handleDeleteQueue = async (queueId) => {
     try {
       await api.delete(`/queue/${queueId}`);
-      toast.success(i18n.t("queues.notifications.queueDeleted"));
+      toast.success(i18n.t("Queue deleted successfully!"));
     } catch (err) {
       toastError(err);
     }
@@ -204,12 +204,6 @@ const Queues = () => {
                 {i18n.t("queues.table.greeting")}
               </TableCell>
               <TableCell align="center">
-                {i18n.t("queues.table.startWork")}
-              </TableCell>
-              <TableCell align="center">
-                {i18n.t("queues.table.endWork")}
-              </TableCell>
-              <TableCell align="center">
                 {i18n.t("queues.table.actions")}
               </TableCell>
             </TableRow>
@@ -242,14 +236,12 @@ const Queues = () => {
                       </Typography>
                     </div>
                   </TableCell>
-                  <TableCell align="center">{queue.startWork}</TableCell>
-                  <TableCell align="center">{queue.endWork}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       size="small"
                       onClick={() => handleEditQueue(queue)}
                     >
-                      <Edit color="secondary" />
+                      <Edit />
                     </IconButton>
 
                     <IconButton
@@ -259,7 +251,7 @@ const Queues = () => {
                         setConfirmModalOpen(true);
                       }}
                     >
-                      <DeleteOutline color="secondary" />
+                      <DeleteOutline />
                     </IconButton>
                   </TableCell>
                 </TableRow>

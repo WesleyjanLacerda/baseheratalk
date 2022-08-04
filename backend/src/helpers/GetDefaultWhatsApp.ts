@@ -5,9 +5,9 @@ import GetDefaultWhatsAppByUser from "./GetDefaultWhatsAppByUser";
 const GetDefaultWhatsApp = async (
   userId?: number
 ): Promise<Whatsapp> => {
-  if(userId) {
+  if (userId) {
     const whatsappByUser = await GetDefaultWhatsAppByUser(userId);
-    if(whatsappByUser !== null) {
+    if (whatsappByUser !== null) {
       return whatsappByUser;
     }
   }

@@ -41,6 +41,9 @@ class Contact extends Model<Contact> {
   @Column
   isGroup: boolean;
 
+  @Column
+  commandBot: string;
+
   @CreatedAt
   createdAt: Date;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
-import openSocket from "../../services/socket-io";
+import openSocket from "socket.io-client";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
@@ -130,7 +130,7 @@ const Contacts = () => {
   }, [searchParam, pageNumber]);
 
   useEffect(() => {
-    const socket = openSocket();
+    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
 
     socket.on("contact", (data) => {
       if (data.action === "update" || data.action === "create") {
@@ -226,8 +226,9 @@ const Contacts = () => {
       <ConfirmationModal
         title={
           deletingContact
-            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${deletingContact.name
-            }?`
+            ? `${i18n.t("contacts.confirmationModal.deleteTitle")} ${
+                deletingContact.name
+              }?`
             : `${i18n.t("contacts.confirmationModal.importTitlte")}`
         }
         open={confirmOpen}
@@ -253,26 +254,18 @@ const Contacts = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon color="secondary" />
+                  <SearchIcon style={{ color: "gray" }} />
                 </InputAdornment>
               ),
             }}
           />
-          <Can
-            role={user.profile}
-            perform="drawer-admin-items:view"
-            yes={() => (
-              <>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={(e) => setConfirmOpen(true)}
-                >
-                  {i18n.t("contacts.buttons.import")}
-                </Button>
-              </>
-            )}
-          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => setConfirmOpen(true)}
+          >
+            {i18n.t("contacts.buttons.import")}
+          </Button>
           <Button
             variant="contained"
             color="primary"
@@ -318,13 +311,13 @@ const Contacts = () => {
                       size="small"
                       onClick={() => handleSaveTicket(contact.id)}
                     >
-                      <WhatsAppIcon color="secondary" />
+                      <WhatsAppIcon />
                     </IconButton>
                     <IconButton
                       size="small"
                       onClick={() => hadleEditContact(contact.id)}
                     >
-                      <EditIcon color="secondary" />
+                      <EditIcon />
                     </IconButton>
                     <Can
                       role={user.profile}
@@ -337,7 +330,7 @@ const Contacts = () => {
                             setDeletingContact(contact);
                           }}
                         >
-                          <DeleteOutlineIcon color="secondary" />
+                          <DeleteOutlineIcon />
                         </IconButton>
                       )}
                     />

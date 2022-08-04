@@ -14,6 +14,7 @@ contactRoutes.post(
 
 contactRoutes.get("/contacts", isAuth, ContactController.index);
 
+contactRoutes.get("/contacts/list", isAuth, ContactController.list);
 contactRoutes.get("/contacts/:contactId", isAuth, ContactController.show);
 
 contactRoutes.post("/contacts", isAuth, ContactController.store);
