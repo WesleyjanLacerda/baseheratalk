@@ -19,3 +19,4 @@ Vá para Frontend edite o arquivo .env:
     Erro no 'npm install', execultar npm install --legacy-peer-deps
     ou npm i material-ui-color
     ou npm install @dabeng/react-orgchart
+    ou npm install eslint-plugin-react-hooks --save-dev
