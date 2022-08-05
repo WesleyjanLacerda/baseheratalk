@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import openSocket from "socket.io-client";
+import openSocket from "../../services/socket-io";
 
 import {
   Button,
@@ -122,7 +122,7 @@ const QuickAnswers = () => {
   }, [searchParam, pageNumber]);
 
   useEffect(() => {
-    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
+    const socket = openSocket();
 
     socket.on("quickAnswer", (data) => {
       if (data.action === "update" || data.action === "create") {
@@ -217,7 +217,7 @@ const QuickAnswers = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon style={{ color: "gray" }} />
+                  <SearchIcon color="secondary" />
                 </InputAdornment>
               ),
             }}
@@ -261,7 +261,7 @@ const QuickAnswers = () => {
                       size="small"
                       onClick={() => handleEditQuickAnswers(quickAnswer)}
                     >
-                      <Edit />
+                      <Edit color="secondary" />
                     </IconButton>
 
                     <IconButton
@@ -271,7 +271,7 @@ const QuickAnswers = () => {
                         setDeletingQuickAnswers(quickAnswer);
                       }}
                     >
-                      <DeleteOutline />
+                      <DeleteOutline color="secondary" />
                     </IconButton>
                   </TableCell>
                 </TableRow>

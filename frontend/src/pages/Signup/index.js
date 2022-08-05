@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 import { Formik, Form, Field } from "formik";
 
 import {
-	Avatar,
 	Button,
 	CssBaseline,
 	TextField,
@@ -18,10 +17,10 @@ import {
 	InputAdornment,
 	IconButton,
 	Link
-  } from '@material-ui/core';
-  
-import { LockOutlined, Visibility, VisibilityOff } from '@material-ui/icons';
-  
+} from '@material-ui/core';
+
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+
 import { makeStyles } from "@material-ui/core/styles";
 
 import { i18n } from "../../translate/i18n";
@@ -29,18 +28,21 @@ import { i18n } from "../../translate/i18n";
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
 
-// const Copyright = () => {
-// 	return (
-// 		<Typography variant="body2" color="textSecondary" align="center">
-// 			{"Copyleft "}
-// 			<Link color="inherit" href="https://github.com/canove">
-// 				Canove
-// 			</Link>{" "}
-// 			{new Date().getFullYear()}
-// 			{"."}
-// 		</Typography>
-// 	);
-// };
+import { system } from "../../../package.json";
+import logo from '../../assets/logo.png';
+
+const Copyright = () => {
+	return (
+		<Typography variant="body2" color="textSecondary" align="center">
+			© {new Date().getFullYear()}
+			{" - "}
+			<Link color="inherit" href="">
+			HeraTalk - v{system.version}
+			</Link>
+			{"."}
+		</Typography>
+	);
+};
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -48,10 +50,6 @@ const useStyles = makeStyles(theme => ({
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
 	},
 	form: {
 		width: "100%",
@@ -91,14 +89,12 @@ const SignUp = () => {
 
 	return (
 		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<LockOutlined />
-				</Avatar>
-				<Typography component="h1" variant="h5">
-					{i18n.t("signup.title")}
-				</Typography>
+		<CssBaseline />
+		<div className={classes.paper}>
+		  <img src="HeraTalk.png" width = "290px" alt=""/>
+		  <Typography component="h1" variant="h1">
+			{i18n.t("")}
+		  </Typography>
 				{/* <form className={classes.form} noValidate onSubmit={handleSignUp}> */}
 				<Formik
 					initialValues={user}
@@ -155,16 +151,16 @@ const SignUp = () => {
 										label={i18n.t("signup.form.password")}
 										type={showPassword ? 'text' : 'password'}
 										InputProps={{
-										endAdornment: (
-											<InputAdornment position="end">
-											<IconButton
-												aria-label="toggle password visibility"
-												onClick={() => setShowPassword((e) => !e)}
-											>
-												{showPassword ? <VisibilityOff /> : <Visibility />}
-											</IconButton>
-											</InputAdornment>
-										)
+											endAdornment: (
+												<InputAdornment position="end">
+													<IconButton
+														aria-label="toggle password visibility"
+														onClick={() => setShowPassword((e) => !e)}
+													>
+														{showPassword ? <VisibilityOff color="secondary" /> : <Visibility color="secondary" />}
+													</IconButton>
+												</InputAdornment>
+											)
 										}}
 									/>
 								</Grid>
@@ -194,7 +190,7 @@ const SignUp = () => {
 					)}
 				</Formik>
 			</div>
-			<Box mt={5}>{/* <Copyright /> */}</Box>
+			<Box mt={5}><Copyright /></Box>
 		</Container>
 	);
 };

@@ -2,7 +2,6 @@ const rules = {
 	user: {
 		static: [],
 	},
-
 	admin: {
 		static: [
 			"drawer-admin-items:view",
@@ -12,7 +11,6 @@ const rules = {
 			"ticket-options:deleteTicket",
 			"ticket-options:transferWhatsapp",
 			"contacts-page:deleteContact",
-			"tags-page:deleteTag"
 		],
 	},
 };

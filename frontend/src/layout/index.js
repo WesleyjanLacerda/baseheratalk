@@ -24,8 +24,12 @@ import UserModal from "../components/UserModal";
 import { AuthContext } from "../context/Auth/AuthContext";
 import BackdropLoading from "../components/BackdropLoading";
 import { i18n } from "../translate/i18n";
-import { Can } from "../components/Can";
+
+import api from "../services/api";
+import toastError from "../errors/toastError";
+
 import logodash from "../assets/logo-dash.png";
+import { system } from "../../package.json";
 
 const drawerWidth = 240;
 
@@ -129,8 +133,22 @@ const LoggedInLayout = ({ children }) => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+
     if (document.body.offsetWidth > 600) {
-      setDrawerOpen(false);
+      const fetchDrawerState = async () => {
+        try {
+          const { data } = await api.get("/settings");
+
+          const settingIndex = data.filter(s => s.key === 'sideMenu');
+
+          setDrawerOpen(settingIndex[0].value === "disabled" ? false : true);
+
+        } catch (err) {
+          setDrawerOpen(true);
+          toastError(err);
+        }
+      };
+      fetchDrawerState();
     }
   }, []);
 
@@ -186,8 +204,8 @@ const LoggedInLayout = ({ children }) => {
         open={drawerOpen}
       >
         <div className={classes.toolbarIcon}>
-        <img src={logodash} alt="logo" />
-          <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+          <img src={logodash} alt="logo" />
+          <IconButton color="secondary" onClick={() => setDrawerOpen(!drawerOpen)}>
             <ChevronLeftIcon />
           </IconButton>
         </div>
@@ -227,17 +245,12 @@ const LoggedInLayout = ({ children }) => {
             noWrap
             className={classes.title}
           >
-            HeraTalk
+            {system.name}
+            <span className={classes.systemCss}>
+              {"(v"}{system.version}{")"}
+            </span>
           </Typography>
-          <Can
-            role={user.profile}
-            perform="drawer-admin-items:view"
-            yes={() => (
-              <>
-                {user.id && <NotificationsPopOver />}
-              </>
-            )}
-          />
+          {user.id && <NotificationsPopOver />}
 
           <div>
             <IconButton

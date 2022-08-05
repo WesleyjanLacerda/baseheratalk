@@ -14,21 +14,26 @@ import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import PeopleAltOutlinedIcon from "@material-ui/icons/PeopleAltOutlined";
 import ContactPhoneOutlinedIcon from "@material-ui/icons/ContactPhoneOutlined";
 import AccountTreeOutlinedIcon from "@material-ui/icons/AccountTreeOutlined";
-import ManageBotsOutlinedIcon from "@material-ui/icons/InsertCommentOutlined";
 import QuestionAnswerOutlinedIcon from "@material-ui/icons/QuestionAnswerOutlined";
-import CodeIcon from "@material-ui/icons/Code";
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import EventIcon from '@material-ui/icons/Event';
+import CodeIcon from '@material-ui/icons/Code';
+import MenuBookIcon from '@material-ui/icons/MenuBook';
+import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
+
 import { i18n } from "../translate/i18n";
 import { WhatsAppsContext } from "../context/WhatsApp/WhatsAppsContext";
 import { AuthContext } from "../context/Auth/AuthContext";
 import { Can } from "../components/Can";
+import { makeStyles } from "@material-ui/core/styles";
 
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import VpnKeyRoundedIcon from '@material-ui/icons/VpnKeyRounded';
+const useStyles = makeStyles(theme => ({
+	icon: {
+		color: theme.palette.secondary.main
+	},
+}));
 
 function ListItemLink(props) {
   const { icon, primary, to, className } = props;
+  const classes = useStyles();
 
   const renderLink = React.useMemo(
     () =>
@@ -41,7 +46,7 @@ function ListItemLink(props) {
   return (
     <li>
       <ListItem button component={renderLink} className={className}>
-        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        {icon ? <ListItemIcon className={classes.icon}>{icon}</ListItemIcon> : null}
         <ListItemText primary={primary} />
       </ListItem>
     </li>
@@ -78,13 +83,16 @@ const MainListItems = (props) => {
 
   return (
     <div onClick={drawerClose}>
-
+      <ListItemLink
+        to="/"
+        primary="Dashboard"
+        icon={<DashboardOutlinedIcon />}
+      />
       <ListItemLink
         to="/tickets"
         primary={i18n.t("mainDrawer.listItems.tickets")}
         icon={<WhatsAppIcon />}
       />
-
       <ListItemLink
         to="/contacts"
         primary={i18n.t("mainDrawer.listItems.contacts")}
@@ -95,78 +103,65 @@ const MainListItems = (props) => {
         primary={i18n.t("mainDrawer.listItems.quickAnswers")}
         icon={<QuestionAnswerOutlinedIcon />}
       />
-      <ListItemLink
-        to="/tags"
-        primary={i18n.t("mainDrawer.listItems.tags")}
-        icon={<LocalOfferIcon />}
-      />
-      <ListItemLink
-        to="/"
-        primary="Dashboard"
-        icon={<DashboardOutlinedIcon />}
-      />
       <Can
         role={user.profile}
         perform="drawer-admin-items:view"
         yes={() => (
           <>
-      <Divider />
-        <ListSubheader inset>
-          {i18n.t("mainDrawer.listItems.administration")}
-        </ListSubheader>
-          <ListItemLink
-            to="/connections"
-            primary={i18n.t("mainDrawer.listItems.connections")}
-            icon={
-              <Badge badgeContent={connectionWarning ? "!" : 0} color="error">
-                <SyncAltIcon />
-              </Badge>
-            }
-          />
-          <ListItemLink
-            to="/users"
-            primary={i18n.t("mainDrawer.listItems.users")}
-            icon={<PeopleAltOutlinedIcon />}
-          />
-          <ListItemLink
-            to="/queues"
-            primary={i18n.t("mainDrawer.listItems.queues")}
-            icon={<AccountTreeOutlinedIcon />}
-          />
-          <ListItemLink
-            to="/bots"
-            primary={i18n.t("mainDrawer.listItems.bots")}
-            icon={<ManageBotsOutlinedIcon />}
-          />
-          <ListItemLink
-            to="/settings"
-            primary={i18n.t("mainDrawer.listItems.settings")}
-            icon={<SettingsOutlinedIcon />}
-          /> 
+            <Divider />
+            <ListSubheader inset>
+              {i18n.t("mainDrawer.listItems.administration")}
+            </ListSubheader>
+            <ListItemLink
+              to="/connections"
+              primary={i18n.t("mainDrawer.listItems.connections")}
+              icon={
+                <Badge badgeContent={connectionWarning ? "!" : 0} color="error">
+                  <SyncAltIcon />
+                </Badge>
+              }
+            />
+            <ListItemLink
+              to="/users"
+              primary={i18n.t("mainDrawer.listItems.users")}
+              icon={<PeopleAltOutlinedIcon />}
+            />
+            <ListItemLink
+              to="/queues"
+              primary={i18n.t("mainDrawer.listItems.queues")}
+              icon={<AccountTreeOutlinedIcon />}
+            />
+            <ListItemLink
+              to="/settings"
+              primary={i18n.t("mainDrawer.listItems.settings")}
+              icon={<SettingsOutlinedIcon />}
+            />
             <Divider />
             <ListSubheader inset>
               {i18n.t("mainDrawer.listItems.apititle")}
-            </ListSubheader>                 
-          <ListItemLink
-            to="/api"
-            primary={i18n.t("mainDrawer.listItems.api")}
-            icon={<CodeIcon />}
-          />
-          <ListItemLink
-            to="/apidocs"
-            primary={i18n.t("mainDrawer.listItems.apidocs")}
-            icon={
-              <MenuBookIcon />
-            }
-          />
-          <ListItemLink
-            to="/apikey"
-            primary={i18n.t("mainDrawer.listItems.apikey")}
-            icon={
-              <VpnKeyRoundedIcon />
-            }
-          />
-        </>
+            </ListSubheader>
+            <ListItemLink
+              to="/api"
+              primary={i18n.t("mainDrawer.listItems.api")}
+              icon={
+                <CodeIcon />
+              }
+            />
+            <ListItemLink
+              to="/apidocs"
+              primary={i18n.t("mainDrawer.listItems.apidocs")}
+              icon={
+                <MenuBookIcon />
+              }
+            />
+            <ListItemLink
+              to="/apikey"
+              primary={i18n.t("mainDrawer.listItems.apikey")}
+              icon={
+                <VpnKeyRoundedIcon />
+              }
+            />
+          </>
         )}
       />
     </div>

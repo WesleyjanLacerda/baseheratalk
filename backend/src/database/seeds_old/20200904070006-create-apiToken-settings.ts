@@ -1,16 +1,14 @@
 import { QueryInterface } from "sequelize";
+import { v4 as uuidv4 } from "uuid";
 
 module.exports = {
   up: (queryInterface: QueryInterface) => {
     return queryInterface.bulkInsert(
-      "Users",
+      "Settings",
       [
         {
-          name: "HeraTalk",
-          email: "admin@heratalk.com.br",
-          passwordHash: "$2a$08$TyusqU6f/uTqOa3L.qW/RuFRiXuyW/CjT6213Dc1ddKzKZn7VIVRO",
-          profile: "admin",
-          tokenVersion: 0,
+          key: "userApiToken",
+          value: uuidv4(),
           createdAt: new Date(),
           updatedAt: new Date()
         }
@@ -20,6 +18,6 @@ module.exports = {
   },
 
   down: (queryInterface: QueryInterface) => {
-    return queryInterface.bulkDelete("Users", {});
+    return queryInterface.bulkDelete("Settings", {});
   }
 };

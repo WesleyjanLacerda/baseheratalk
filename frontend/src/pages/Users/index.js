@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useReducer, useRef } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { toast } from "react-toastify";
-import openSocket from "socket.io-client";
+import openSocket from "../../services/socket-io";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -29,80 +29,72 @@ import TableRowSkeleton from "../../components/TableRowSkeleton";
 import UserModal from "../../components/UserModal";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import toastError from "../../errors/toastError";
-import UserStatusIcon from "../../components/User/statusIcon";
 
 const reducer = (state, action) => {
   if (action.type === "LOAD_USERS") {
     const users = action.payload;
     const newUsers = [];
 
-		users.forEach(user => {
-			const userIndex = state.findIndex(u => u.id === user.id);
-			if (userIndex !== -1) {
-				state[userIndex] = user;
-			} else {
-				newUsers.push(user);
-			}
-		});
+    users.forEach((user) => {
+      const userIndex = state.findIndex((u) => u.id === user.id);
+      if (userIndex !== -1) {
+        state[userIndex] = user;
+      } else {
+        newUsers.push(user);
+      }
+    });
 
-		return [...state, ...newUsers];
-	}
+    return [...state, ...newUsers];
+  }
 
-	if (action.type === "UPDATE_USERS") {
-		const user = action.payload;
-		const userIndex = state.findIndex(u => u.id === user.id);
+  if (action.type === "UPDATE_USERS") {
+    const user = action.payload;
+    const userIndex = state.findIndex((u) => u.id === user.id);
 
-		if (userIndex !== -1) {
-			state[userIndex] = user;
-			return [...state];
-		} else {
-			return [user, ...state];
-		}
-	}
+    if (userIndex !== -1) {
+      state[userIndex] = user;
+      return [...state];
+    } else {
+      return [user, ...state];
+    }
+  }
 
   if (action.type === "DELETE_USER") {
     const userId = action.payload;
 
-		const userIndex = state.findIndex(u => u.id === userId);
-		if (userIndex !== -1) {
-			state.splice(userIndex, 1);
-		}
-		return [...state];
-	}
+    const userIndex = state.findIndex((u) => u.id === userId);
+    if (userIndex !== -1) {
+      state.splice(userIndex, 1);
+    }
+    return [...state];
+  }
 
   if (action.type === "RESET") {
     return [];
   }
 };
 
-const useStyles = makeStyles(theme => ({
-	mainPaper: {
-		flex: 1,
-		//padding: theme.spacing(1),
-		borderRadius:0,
-		overflowY: "scroll",
-		...theme.scrollbarStyles,
-	},
+const useStyles = makeStyles((theme) => ({
+  mainPaper: {
+    flex: 1,
+    padding: theme.spacing(1),
+    overflowY: "scroll",
+    ...theme.scrollbarStyles,
+  },
 }));
 
 const Users = () => {
-	const classes = useStyles();
+  const classes = useStyles();
 
-	const [loading, setLoading] = useState(false);
-	const [pageNumber, setPageNumber] = useState(1);
-	const [hasMore, setHasMore] = useState(false);
-	const [selectedUser, setSelectedUser] = useState(null);
-	const [deletingUser, setDeletingUser] = useState(null);
-	const [userModalOpen, setUserModalOpen] = useState(false);
-	const [confirmModalOpen, setConfirmModalOpen] = useState(false);
-	const [searchParam, setSearchParam] = useState("");
-	const [users, dispatch] = useReducer(reducer, []);
-	const [addDisabled, setAddDisabled] = useState(false);
-	const [countUsers, setCountUsers] = useState(0);
-	const [limitUsers, setLimitUsers] = useState(0);
-	const countUsersRef = useRef();
-
-  countUsersRef.current = countUsers;
+  const [loading, setLoading] = useState(false);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [deletingUser, setDeletingUser] = useState(null);
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [searchParam, setSearchParam] = useState("");
+  const [users, dispatch] = useReducer(reducer, []);
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -118,8 +110,6 @@ const Users = () => {
             params: { searchParam, pageNumber },
           });
           dispatch({ type: "LOAD_USERS", payload: data.users });
-          setLimitUsers(data.limitUsers);
-					setCountUsers(data.count);
           setHasMore(data.hasMore);
           setLoading(false);
         } catch (err) {
@@ -131,78 +121,66 @@ const Users = () => {
     return () => clearTimeout(delayDebounceFn);
   }, [searchParam, pageNumber]);
 
-	useEffect(() => {
-		if (limitUsers && limitUsers <= countUsers) {
-			setAddDisabled(true);
-		} else {
-			setAddDisabled(false);
-		}
-	}, [limitUsers, countUsers]);
-
   useEffect(() => {
-    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
+    const socket = openSocket();
 
-		socket.on("user", data => {
-			if (data.action === "create") {
-				setCountUsers(countUsersRef.current + 1);
-			}
-			if (data.action === "update" || data.action === "create") {
-				dispatch({ type: "UPDATE_USERS", payload: data.user });
-			}
+    socket.on("user", (data) => {
+      if (data.action === "update" || data.action === "create") {
+        dispatch({ type: "UPDATE_USERS", payload: data.user });
+      }
 
-			if (data.action === "delete") {
-				dispatch({ type: "DELETE_USER", payload: +data.userId });
-			}
-		});
+      if (data.action === "delete") {
+        dispatch({ type: "DELETE_USER", payload: +data.userId });
+      }
+    });
 
-		return () => {
-			socket.disconnect();
-		};
-	}, []);
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
-	const handleOpenUserModal = () => {
-		setSelectedUser(null);
-		setUserModalOpen(true);
-	};
+  const handleOpenUserModal = () => {
+    setSelectedUser(null);
+    setUserModalOpen(true);
+  };
 
-	const handleCloseUserModal = () => {
-		setSelectedUser(null);
-		setUserModalOpen(false);
-	};
+  const handleCloseUserModal = () => {
+    setSelectedUser(null);
+    setUserModalOpen(false);
+  };
 
-	const handleSearch = event => {
-		setSearchParam(event.target.value.toLowerCase());
-	};
+  const handleSearch = (event) => {
+    setSearchParam(event.target.value.toLowerCase());
+  };
 
-	const handleEditUser = user => {
-		setSelectedUser(user);
-		setUserModalOpen(true);
-	};
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setUserModalOpen(true);
+  };
 
-	const handleDeleteUser = async userId => {
-		try {
-			await api.delete(`/users/${userId}`);
-			toast.success(i18n.t("users.toasts.deleted"));
-			setCountUsers(countUsers - 1);
-		} catch (err) {
-			toastError(err);
-		}
-		setDeletingUser(null);
-		setSearchParam("");
-		setPageNumber(1);
-	};
+  const handleDeleteUser = async (userId) => {
+    try {
+      await api.delete(`/users/${userId}`);
+      toast.success(i18n.t("users.toasts.deleted"));
+    } catch (err) {
+      toastError(err);
+    }
+    setDeletingUser(null);
+    setSearchParam("");
+    setPageNumber(1);
+  };
 
-	const loadMore = () => {
-		setPageNumber(prevState => prevState + 1);
-	};
+  const loadMore = () => {
+    setPageNumber((prevState) => prevState + 1);
+  };
 
-	const handleScroll = e => {
-		if (!hasMore || loading) return;
-		const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-		if (scrollHeight - (scrollTop + 100) < clientHeight) {
-			loadMore();
-		}
-	};
+  const handleScroll = (e) => {
+    if (!hasMore || loading) return;
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    if (scrollHeight - (scrollTop + 100) < clientHeight) {
+      loadMore();
+    }
+  };
 
   return (
     <MainContainer>
@@ -236,7 +214,7 @@ const Users = () => {
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon style={{ color: "gray" }} />
+                  <SearchIcon color="secondary" />
                 </InputAdornment>
               ),
             }}
@@ -244,7 +222,6 @@ const Users = () => {
           <Button
             variant="contained"
             color="primary"
-            disabled={addDisabled}
             onClick={handleOpenUserModal}
           >
             {i18n.t("users.buttons.add")}
@@ -259,11 +236,7 @@ const Users = () => {
         <Table size="small">
           <TableHead>
             <TableRow>
-            <TableCell align="center">
-            {i18n.t("users.table.status")}
-            </TableCell>
-              <TableCell align="center">{i18n.t("users.table.name")}
-              </TableCell>
+              <TableCell align="center">{i18n.t("users.table.name")}</TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.email")}
               </TableCell>
@@ -272,7 +245,7 @@ const Users = () => {
               </TableCell>
               <TableCell align="center">
                 {i18n.t("users.table.whatsapp")}
-              </TableCell>
+              </TableCell>              
               <TableCell align="center">
                 {i18n.t("users.table.actions")}
               </TableCell>
@@ -282,8 +255,7 @@ const Users = () => {
             <>
               {users.map((user) => (
                 <TableRow key={user.id}>
-                <TableCell align="center"><UserStatusIcon user={user} /></TableCell>
-                  <TableCell align="center"> {user.name} </TableCell>
+                  <TableCell align="center">{user.name}</TableCell>
                   <TableCell align="center">{user.email}</TableCell>
                   <TableCell align="center">{user.profile}</TableCell>
                   <TableCell align="center">{user.whatsapp?.name}</TableCell>
@@ -292,17 +264,17 @@ const Users = () => {
                       size="small"
                       onClick={() => handleEditUser(user)}
                     >
-                      <EditIcon />
+                      <EditIcon color="secondary" />
                     </IconButton>
 
                     <IconButton
                       size="small"
-                      onClick={e => {
+                      onClick={(e) => {
                         setConfirmModalOpen(true);
                         setDeletingUser(user);
                       }}
                     >
-                      <DeleteOutlineIcon />
+                      <DeleteOutlineIcon color="secondary" />
                     </IconButton>
                   </TableCell>
                 </TableRow>

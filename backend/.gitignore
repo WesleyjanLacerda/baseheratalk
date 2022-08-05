@@ -4,7 +4,6 @@ dist
 !public/.gitkeep
 .env
 .env.test
-.wwebjs_auth
 
 package-lock.json
 yarn.lock

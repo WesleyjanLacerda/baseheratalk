@@ -14,7 +14,7 @@ const toastError = err => {
 			});
 		}
 	} else {
-		toast.error("500 Erro Interno no Servidor");
+		toast.error("An error occurred!");
 	}
 };
 

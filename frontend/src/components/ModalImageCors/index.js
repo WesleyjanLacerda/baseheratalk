@@ -7,8 +7,8 @@ import api from "../../services/api";
 const useStyles = makeStyles(theme => ({
 	messageMedia: {
 		objectFit: "cover",
-		width: 320,
-		height: 270, // Tamanho Imagem na conversa
+		width: 250,
+		height: 200,
 		borderTopLeftRadius: 8,
 		borderTopRightRadius: 8,
 		borderBottomLeftRadius: 8,

@@ -66,35 +66,18 @@ const useStyles = makeStyles(theme => ({
 	},
 
 	lastMessageTime: {
-		//justifySelf: "flex-end",
-		alignSelf: "center",
 		justifySelf: "flex-end",
-		marginLeft: "auto",
-		marginRight: 30,
 	},
 
 	closedBadge: {
-		//alignSelf: "center",
-		//justifySelf: "flex-end",
-		//marginRight: 32,
-		//marginLeft: "auto",
-		position: "absolute",
-		marginRight: 20,
-		right: 220,
-		bottom: 40,
-		color: "#ffffff",
-		border: "1px solid #000000",
-		padding: 1,
-		paddingLeft: 5,
-		paddingRight: 5,
-		borderRadius: 10,
-		fontSize: "0.9em"
+		alignSelf: "center",
+		justifySelf: "flex-end",
+		marginRight: 32,
+		marginLeft: "auto",
 	},
 
 	contactLastMessage: {
-		//paddingRight: 80,
-		paddingRight: 20,
-		paddingBottom: 6,
+		paddingRight: 80,
 	},
 
 	newMessagesCount: {
@@ -147,21 +130,20 @@ const useStyles = makeStyles(theme => ({
 		bottom: 30,
 		//backgroundColor: theme.palette.background.default,
 		color: theme.palette.primary.main,
-		//border: "0.1px solid #F0F8FF",
+		border: "0.1px solid #F0F8FF",
 		padding: 1,
 		paddingLeft: 5,
 		paddingRight: 5,
 		borderRadius: 10,
 		fontSize: "0.9em",
-		fontWeight: "900",
-		paddingBottom: 6,
+		fontWeight: "900"
 	},
 	WhatsTag: { //nome da Conexão do whatsapp
 		position: "absolute",
 		backgroundColor:  theme.palette.primary.main,
 		color: "#F0F8FF",
-		left: "11",
-		bottom: 3,
+		left: "2.8%",
+		bottom: 1,
 		fontSize: "0.7em",
 		paddingLeft: 12,
 		paddingRight: 12,

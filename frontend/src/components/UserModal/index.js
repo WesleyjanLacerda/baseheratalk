@@ -18,7 +18,7 @@ import {
 	TextField,
 	InputAdornment,
 	IconButton
-} from '@material-ui/core';
+  } from '@material-ui/core';
 
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 
@@ -36,6 +36,7 @@ import useWhatsApps from "../../hooks/useWhatsApps";
 
 const useStyles = makeStyles(theme => ({
 	root: {
+		backgroundColor: theme.palette.background.paper,
 		display: "flex",
 		flexWrap: "wrap",
 	},
@@ -80,7 +81,7 @@ const UserModal = ({ open, onClose, userId }) => {
 		name: "",
 		email: "",
 		password: "",
-		profile: "user"
+		profile: "user",
 	};
 
 	const { user: loggedInUser } = useContext(AuthContext);
@@ -186,7 +187,7 @@ const UserModal = ({ open, onClose, userId }) => {
 												aria-label="toggle password visibility"
 												onClick={() => setShowPassword((e) => !e)}
 											>
-												{showPassword ? <VisibilityOff /> : <Visibility />}
+												{showPassword ? <VisibilityOff color="secondary" /> : <Visibility color="secondary" />}
 											</IconButton>
 											</InputAdornment>
 										)
@@ -227,8 +228,8 @@ const UserModal = ({ open, onClose, userId }) => {
 														id="profile-selection"
 														required
 													>
-														<MenuItem value="admin">Admin</MenuItem>
-														<MenuItem value="user">User</MenuItem>
+														<MenuItem value="admin">{i18n.t("userModal.form.admin")}</MenuItem>
+														<MenuItem value="user">{i18n.t("userModal.form.user")}</MenuItem>
 													</Field>
 												</>
 											)}

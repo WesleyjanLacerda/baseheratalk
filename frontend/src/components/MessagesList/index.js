@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useReducer, useRef } from "react";
 
 import { isSameDay, parseISO, format } from "date-fns";
-import openSocket from "socket.io-client";
+import openSocket from "../../services/socket-io";
 import clsx from "clsx";
-import { i18n } from "../../translate/i18n.js";
 
-import { green, blue } from "@material-ui/core/colors";
+import { blue } from "@material-ui/core/colors";
 import {
   Button,
   CircularProgress,
@@ -27,7 +26,6 @@ import VcardPreview from "../VcardPreview";
 import LocationPreview from "../LocationPreview";
 import ModalImageCors from "../ModalImageCors";
 import MessageOptionsMenu from "../MessageOptionsMenu";
-import whatsBackground from "../../assets/wa-background.png";
 
 import api from "../../services/api";
 import toastError from "../../errors/toastError";
@@ -42,29 +40,13 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
 
-  messageCenter: {
-    marginTop: 5,
-    alignItems: "center",
-    verticalAlign: "center",
-    alignContent: "center",
-    backgroundColor: "#E1F5FEEB",
-    fontSize: "12px",
-    minWidth: 100,
-    maxWidth: 270,
-    color: "#272727",
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 8,
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingTop: 5,
-    paddingBottom: 0,
-    boxShadow: "0 1px 1px #b3b3b3",
+  ticketNumber: {
+    color: theme.palette.secondary.main,
+    padding: 8,
   },
 
   messagesList: {
-    backgroundImage: `url(${whatsBackground})`,
+    backgroundImage: theme.backgroundImage,
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
@@ -77,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   circleLoading: {
-    color: green[500],
+    color: blue[500],
     position: "absolute",
     opacity: "70%",
     top: 0,
@@ -221,8 +203,8 @@ const useStyles = makeStyles((theme) => ({
 
   messageMedia: {
     objectFit: "cover",
-    width: 320, // Tamanho do vídeo
-    height: 270,
+    width: 250,
+    height: 200,
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     borderBottomLeftRadius: 8,
@@ -231,7 +213,6 @@ const useStyles = makeStyles((theme) => ({
 
   timestamp: {
     fontSize: 11,
-    padding:7,
     position: "absolute",
     bottom: 0,
     right: 5,
@@ -282,56 +263,27 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "inherit",
     padding: 10,
   },
-  imageGroup: {
-		display: "flex",
-		flexWrap: "wrap",
-		maxWidth: 250,
-		marginRight:-5
-	},
-	imageGroupItem: {
-		cursor: "pointer",
-		width: 120,
-		height: 120,
-		overflow: "hidden",
-		borderRadius: "5px",
-		marginBottom:"5px",
-		marginRight: 5,
-		"& img": {
-			objectFit: "cover",
-			width: "100%",
-			height: "100%"
-		}
-	},
-	imageGroupItemLast: {
-		position: "relative",
-		cursor: "pointer",
-		background:"#000",
-		width:120,
-		height:120,
-		overflow: "hidden",
-		marginBottom:"5px",
-		marginRight: 5,
-		borderRadius: 5,
-		"& div": {
-			opacity:0.7,
-			borderRadius: "5px",
-			height: "100%",
-			width: "100%",
-			"& img": {
-				objectFit: "cover",
-				width: "100%",
-				height: "100%"
-			}
-		},
-		"& span": {
-			position:"absolute",
-			color: "#FFF",
-			top: "50%",
-			left: "50%",
-			transform: "translate(-50%, -50%)",
-			fontSize: "1.9em"
-		}
-	}
+
+  messageCenter: {
+    marginTop: 5,
+    alignItems: "center",
+    verticalAlign: "center",
+    alignContent: "center",
+    backgroundColor: "#E1F5FEEB",
+    fontSize: "12px",
+    minWidth: 100,
+    maxWidth: 270,
+    color: "#272727",
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingTop: 5,
+    paddingBottom: 0,
+    boxShadow: "0 1px 1px #b3b3b3",
+  },
 }));
 
 const reducer = (state, action) => {
@@ -375,27 +327,13 @@ const reducer = (state, action) => {
     return [...state];
   }
 
-  if (action.type === "DELETE_MESSAGE") {
-		const messageId = action.payload;
-		const messageIndex = state.findIndex(m => m.id === messageId);
-
-		if (messageIndex !== -1) {
-			state.splice(messageIndex, 1);
-		}
-
-		return [...state];
-	}
-
   if (action.type === "RESET") {
     return [];
   }
 };
 
 const MessagesList = ({ ticketId, isGroup }) => {
- // const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const classes = useStyles();
-
-	var forceScroll = false;
 
   const [messagesList, dispatch] = useReducer(reducer, []);
   const [pageNumber, setPageNumber] = useState(1);
@@ -407,8 +345,6 @@ const MessagesList = ({ ticketId, isGroup }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const messageOptionsMenuOpen = Boolean(anchorEl);
   const currentTicketId = useRef(ticketId);
-
-  // const [showModalMediaNavigator, setShowModalMediaNavigator] = useState({});
 
   useEffect(() => {
     dispatch({ type: "RESET" });
@@ -432,7 +368,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
             setLoading(false);
           }
 
-					if ((pageNumber === 1 || forceScroll) && data.messages.length > 1) {
+          if (pageNumber === 1 && data.messages.length > 1) {
             scrollToBottom();
           }
         } catch (err) {
@@ -445,10 +381,10 @@ const MessagesList = ({ ticketId, isGroup }) => {
     return () => {
       clearTimeout(delayDebounceFn);
     };
-  }, [forceScroll, pageNumber, ticketId]);
+  }, [pageNumber, ticketId]);
 
   useEffect(() => {
-    const socket = openSocket(process.env.REACT_APP_BACKEND_URL);
+    const socket = openSocket();
 
     socket.on("connect", () => socket.emit("joinChatBox", ticketId));
 
@@ -461,11 +397,6 @@ const MessagesList = ({ ticketId, isGroup }) => {
       if (data.action === "update") {
         dispatch({ type: "UPDATE_MESSAGE", payload: data.message });
       }
-
-			if (data.action === "delete") {
-				dispatch({type: "DELETE_MESSAGE", payload: data.messageId });
-			}
-
     });
 
     return () => {
@@ -473,8 +404,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
     };
   }, [ticketId]);
 
-  const loadMore = (force) => {
-    forceScroll = force;
+  const loadMore = () => {
     setPageNumber((prevPageNumber) => prevPageNumber + 1);
   };
 
@@ -497,7 +427,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
     }
 
     if (scrollTop < 50) {
-      loadMore(false);
+      loadMore();
     }
   };
 
@@ -511,57 +441,56 @@ const MessagesList = ({ ticketId, isGroup }) => {
   };
 
   const checkMessageMedia = (message) => {
-	if(message.mediaType === "location" && message.body.split('|').length >= 2) {
-		let locationParts = message.body.split('|')
-		let imageLocation = locationParts[0]		
-		let linkLocation = locationParts[1]
-		
-		let descriptionLocation = null
-		
-		if(locationParts.length > 2)
-			descriptionLocation = message.body.split('|')[2]
-		
-		return <LocationPreview image={imageLocation} link={linkLocation} description={descriptionLocation} />
-	}
-	else if (message.mediaType === "vcard") {
-		//console.log("vcard")
-		//console.log(message)
-		let array = message.body.split("\n");
-		let obj = [];
-		let contact = "";
-		for (let index = 0; index < array.length; index++) {
-			const v = array[index];
-			let values = v.split(":");
-			for (let ind = 0; ind < values.length; ind++) {
-				if (values[ind].indexOf("+") !== -1) {
-					obj.push({ number: values[ind] });
-				}
-				if (values[ind].indexOf("FN") !== -1) {
-					contact = values[ind + 1];
-				}
-			}
+    if (message.mediaType === "location" && message.body.split('|').length >= 2) {
+      let locationParts = message.body.split('|')
+      let imageLocation = locationParts[0]
+      let linkLocation = locationParts[1]
 
-		}
-		return <VcardPreview contact={contact} numbers={obj[0].number} />
-	} 
-  /*else if (message.mediaType === "multi_vcard") {
-		console.log("multi_vcard")
-		console.log(message)
-		
-		if(message.body !== null && message.body !== "") {
-			let newBody = JSON.parse(message.body)
-			return (
-				<>
-				  {
-					newBody.map(v => (
-					  <VcardPreview contact={v.name} numbers={v.number} />
-					))
-				  }
-				</>
-			)
-		} else return (<></>)
-	}*/
-  else if (message.mediaType === "image") {
+      let descriptionLocation = null
+
+      if (locationParts.length > 2)
+        descriptionLocation = message.body.split('|')[2]
+
+      return <LocationPreview image={imageLocation} link={linkLocation} description={descriptionLocation} />
+    }
+    else if (message.mediaType === "vcard") {
+      //console.log("vcard")
+      //console.log(message)
+      let array = message.body.split("\n");
+      let obj = [];
+      let contact = "";
+      for (let index = 0; index < array.length; index++) {
+        const v = array[index];
+        let values = v.split(":");
+        for (let ind = 0; ind < values.length; ind++) {
+          if (values[ind].indexOf("+") !== -1) {
+            obj.push({ number: values[ind] });
+          }
+          if (values[ind].indexOf("FN") !== -1) {
+            contact = values[ind + 1];
+          }
+        }
+      }
+      return <VcardPreview contact={contact} numbers={obj[0].number} />
+    }
+    /*else if (message.mediaType === "multi_vcard") {
+      console.log("multi_vcard")
+      console.log(message)
+    	
+      if(message.body !== null && message.body !== "") {
+        let newBody = JSON.parse(message.body)
+        return (
+          <>
+            {
+            newBody.map(v => (
+              <VcardPreview contact={v.name} numbers={v.number} />
+            ))
+            }
+          </>
+        )
+      } else return (<></>)
+    }*/
+    else if (message.mediaType === "image") {
       return <ModalImageCors imageUrl={message.mediaUrl} />;
     } else if (message.mediaType === "audio") {
       return <Audio url={message.mediaUrl} />
@@ -616,7 +545,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
           key={`timestamp-${message.id}`}
         >
           <div className={classes.dailyTimestampText}>
-            {format(parseISO(messagesList[index].createdAt), "dd/MM/yyyy hh:mm a")}
+            {format(parseISO(messagesList[index].createdAt), "dd/MM/yyyy")}
           </div>
         </span>
       );
@@ -649,6 +578,22 @@ const MessagesList = ({ ticketId, isGroup }) => {
     }
   };
 
+  const renderNumberTicket = (message, index) => {
+    if (index < messagesList.length && index > 0) {
+      let messageTicket = message.ticketId;
+      let previousMessageTicket = messagesList[index - 1].ticketId;
+
+      if (messageTicket !== previousMessageTicket) {
+        return (
+          <div key={`ticket-${message.id}`} className={classes.ticketNumber}>
+            #ticket: {messageTicket}
+            <hr />
+          </div>
+        );
+      }
+    }
+  };
+
   const renderMessageDivider = (message, index) => {
     if (index < messagesList.length && index > 0) {
       let messageUser = messagesList[index].fromMe;
@@ -661,24 +606,6 @@ const MessagesList = ({ ticketId, isGroup }) => {
       }
     }
   };
-
-  const renderTicketDivider = (message, index) => {
-		if (index < messagesList.length && index > 0) {
-			if (messagesList[index].ticketId !== messagesList[index - 1].ticketId) {
-				return (
-					<span
-						className={classes.dailyTimestamp}
-						style={{width: 'auto'}}
-						key={`ticket-divider-${message.id}`}
-					>
-						<div className={classes.dailyTimestampText}>
-							{i18n.t("ticket")} #{message.ticketId} {message.ticket && message.ticket.createdAt && <span> - {format(parseISO(message.ticket.createdAt), "dd/MM/yyyy HH:mm")}</span>}
-						</div>
-					</span>
-				);
-			}
-		}
-	};
 
   const renderQuotedMessage = (message) => {
     return (
@@ -698,7 +625,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
               {message.quotedMsg?.contact?.name}
             </span>
           )}
-					{message.quotedMsg && message.quotedMsg.mediaUrl ? checkMessageMedia(message.quotedMsg) : message.quotedMsg?.body}
+          {message.quotedMsg?.body}
         </div>
       </div>
     );
@@ -708,13 +635,12 @@ const MessagesList = ({ ticketId, isGroup }) => {
     if (messagesList.length > 0) {
       const viewMessagesList = messagesList.map((message, index) => {
         if (message.mediaType === "call_log") {
-          // Grouped image and video messages
           return (
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
               {renderMessageDivider(message, index)}
-              {renderTicketDivider(message, index)}
-              <div className={message.fromMe ? classes.messageRight : classes.messageLeft}>
+              {renderNumberTicket(message, index)}
+              <div className={classes.messageCenter}>
                 <IconButton
                   variant="contained"
                   size="small"
@@ -744,7 +670,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
               {renderMessageDivider(message, index)}
-              {renderTicketDivider(message, index)}
+              {renderNumberTicket(message, index)}
               <div className={classes.messageLeft}>
                 <IconButton
                   variant="contained"
@@ -761,8 +687,8 @@ const MessagesList = ({ ticketId, isGroup }) => {
                     {message.contact?.name}
                   </span>
                 )}
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard" 
-                //|| message.mediaType === "multi_vcard" 
+                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
+                  //|| message.mediaType === "multi_vcard" 
                 ) && checkMessageMedia(message)}
                 <div className={classes.textContentItem}>
                   {message.quotedMsg && renderQuotedMessage(message)}
@@ -779,6 +705,7 @@ const MessagesList = ({ ticketId, isGroup }) => {
             <React.Fragment key={message.id}>
               {renderDailyTimestamps(message, index)}
               {renderMessageDivider(message, index)}
+              {renderNumberTicket(message, index)}
               <div className={classes.messageRight}>
                 <IconButton
                   variant="contained"
@@ -790,8 +717,8 @@ const MessagesList = ({ ticketId, isGroup }) => {
                 >
                   <ExpandMore />
                 </IconButton>
-                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard" 
-                //|| message.mediaType === "multi_vcard" 
+                {(message.mediaUrl || message.mediaType === "location" || message.mediaType === "vcard"
+                  //|| message.mediaType === "multi_vcard" 
                 ) && checkMessageMedia(message)}
                 <div
                   className={clsx(classes.textContentItem, {
@@ -806,7 +733,10 @@ const MessagesList = ({ ticketId, isGroup }) => {
                     />
                   )}
                   {message.quotedMsg && renderQuotedMessage(message)}
-                  <MarkdownWrapper>{message.body}</MarkdownWrapper>
+                  {(message.mediaType === "image"
+                    ? ''
+                    : <MarkdownWrapper>{message.body}</MarkdownWrapper>
+                  )}
                   <span className={classes.timestamp}>
                     {format(parseISO(message.createdAt), "HH:mm")}
                     {renderMessageAck(message)}

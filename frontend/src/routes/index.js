@@ -13,21 +13,18 @@ import Users from "../pages/Users";
 import Contacts from "../pages/Contacts/";
 import QuickAnswers from "../pages/QuickAnswers/";
 import Queues from "../pages/Queues/";
-import Bots from "../pages/Bots";
-import Tags from "../pages/Tags/";
-import { AuthProvider } from "../context/Auth/AuthContext";
-import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Api from "../pages/Api/";
 import ApiDocs from "../pages/ApiDocs/";
 import ApiKey from "../pages/ApiKey/";
+
+import { AuthProvider } from "../context/Auth/AuthContext";
+import { WhatsAppsProvider } from "../context/WhatsApp/WhatsAppsContext";
 import Route from "./Route";
-import UserManageStatus from "../components/User/manageStatus";
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-      <UserManageStatus />
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
@@ -55,9 +52,6 @@ const Routes = () => {
                 isPrivate
               />
               <Route exact path="/Settings" component={Settings} isPrivate />
-              <Route exact path="/Queues" component={Queues} isPrivate />
-              <Route exact path="/tags" component={Tags} isPrivate />
-			  <Route exact path="/Bots" component={Bots} isPrivate />
               <Route exact path="/api" component={Api} isPrivate />
               <Route exact path="/apidocs" component={ApiDocs} isPrivate />
               <Route exact path="/apikey" component={ApiKey} isPrivate />

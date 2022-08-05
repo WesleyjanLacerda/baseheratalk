@@ -31,14 +31,8 @@ class Message extends Model<Message> {
   @Column
   fromMe: boolean;
 
-  @Column(DataType.STRING("long"))
+  @Column(DataType.TEXT)
   body: string;
-
-  @Column(DataType.STRING("long"))
-  dataJson: string;
-
-  @Column(DataType.STRING)
-  participant: string;
 
   @Column(DataType.STRING)
   get mediaUrl(): string | null {

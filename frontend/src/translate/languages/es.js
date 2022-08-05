@@ -55,7 +55,8 @@ const messages = {
       connections: {
         title: "Conexiones",
         toasts: {
-          deleted: "¡La conexión de WhatsApp ha sido borrada satisfactoriamente!",
+          deleted:
+            "¡La conexión de WhatsApp ha sido borrada satisfactoriamente!",
         },
         confirmationModal: {
           deleteTitle: "Borrar",
@@ -92,12 +93,10 @@ const messages = {
           },
         },
         table: {
-          channel: "Canal",
           name: "Nombre",
           status: "Estado",
           lastUpdate: "Última Actualización",
           default: "Por Defecto",
-          battery: "Bateria",
           actions: "Acciones",
           session: "Sesión",
         },
@@ -110,7 +109,6 @@ const messages = {
         form: {
           name: "Nombre",
           default: "Por Defecto",
-          farewellMessage: "Mensaje de Despedida"
         },
         buttons: {
           okAdd: "Agregar",
@@ -190,36 +188,20 @@ const messages = {
           add: "Agregar cola",
           edit: "Editar cola",
         },
+        notification: {
+          title: "¡Sector guardado con éxito!",
+        },
         form: {
           name: "Nombre",
           color: "Color",
           greetingMessage: "Mensaje de saludo",
+          startWork: "Apertura",
+          endWork: "Cierre",
+          absenceMessage: "Mensaje de ausencia",
         },
         buttons: {
           okAdd: "Añadir",
           okEdit: "Ahorrar",
-          cancel: "Cancelar",
-        },
-      },
-      botModal: {
-        title: {
-          add: "Añadir Comando",
-          edit: "Editar comando",
-        },
-        form: {
-          commandBot: "Comando",
-          descriptionBot: "Descripción",
-          commandType: "Tipo",
-          showMessage: "Mensaje",
-          userId: "Atención",
-          queueId: "Sector",
-        },
-        messages: {
-          saved: "¡Comando guardado con éxito!",
-        },
-        buttons: {
-          okAdd: "Adicionar",
-          okEdit: "Guardar",
           cancel: "Cancelar",
         },
       },
@@ -232,8 +214,8 @@ const messages = {
           name: "Nombre",
           email: "Correo Electrónico",
           password: "Contraseña",
-          profile: "Perfil",
           whatsapp: "Conexión estándar",
+          profile: "Perfil",
         },
         buttons: {
           okAdd: "Agregar",
@@ -241,22 +223,6 @@ const messages = {
           cancel: "Cancelar",
         },
         success: "Usuario guardado satisfactoriamente.",
-      },
-      tagModal: {
-        title: {
-          add: "Nuevo Tag",
-          edit: "Editar Tag",
-        },
-        form: {
-          name: "Nome",
-          color: "Cor"
-        },
-        buttons: {
-          okAdd: "Añadir",
-          okEdit: "Guardar",
-          cancel: "Cancelar",
-        },
-        success: "Tag Guardado exitosamente.",
       },
       chat: {
         noTicketMessage: "Selecciona un ticket para empezar a chatear.",
@@ -267,7 +233,7 @@ const messages = {
         },
       },
       ticketsQueueSelect: {
-        placeholder: "Sectores",
+        placeholder: "Linhas",
       },
       tickets: {
         toasts: {
@@ -306,8 +272,7 @@ const messages = {
         assignedHeader: "Trabajando en",
         noTicketsTitle: "¡Nada acá!",
         connectionTitle: "Conexión que se está utilizando actualmente.",
-        noTicketsMessage:
-          "No se encontraron tickets con este estado o término de búsqueda",
+        noTicketsMessage: "No se encontraron tickets con este estado o término de búsqueda",
         buttons: {
           accept: "Acceptar",
         },
@@ -328,17 +293,15 @@ const messages = {
           tickets: "Tickets",
           contacts: "Contactos",
           quickAnswers: "Respuestas rápidas",
-          queues: "Sectores",
-          schedules: "Agendar",
-          tags: "Tags",
-          bots: "Chatbot",
+          queues: "Linhas",
           administration: "Administración",
-          api: "Uso da API",
-          apidocs: "Documentação",
-          apititle: "API",
-          apikey: "API Key",
           users: "Usuarios",
           settings: "Configuración",
+          api: "uso de la API",
+          apidocs: "Documentación",
+          apititle: "API",
+          apikey: "API Key",
+          token: "Token"
         },
         appBar: {
           user: {
@@ -350,92 +313,30 @@ const messages = {
       notifications: {
         noTickets: "Sin notificaciones.",
       },
-      schedules: {
-        title: " Programación",
-        confirmationModal: {
-          deleteTitle:
-            "¿Está seguro de que desea eliminar este programa?",
-          deleteMessage: "Esta acción no se puede revertir.",
-        },
-        table: {
-          contact: "Contacto",
-          body: "Mensaje",
-          sendAt: "Fecha de programación",
-          sentAt: "Fecha de Envio",
-          status: "Estado",
-          actions: "Acciones",
-        },
-        buttons: {
-          add: "Nueva Programación",
-        },
-        toasts: {
-          deleted: "Programación eliminado con éxito.",
-        }
-      },
-      scheduleModal: {
-        title: {
-          add: "Nueva Programación",
-          edit: "Editar Programación",
-        },
-        form: {
-          body: "Mensaje",
-          contact: "Contacto",
-          sendAt: "Fecha de programación",
-          sentAt: "Fecha de Envio"
-        },
-        buttons: {
-          okAdd: "Añadir",
-          okEdit: "Guardar",
-          cancel: "Cancelar",
-        },
-        success: "Agendamento salvo com sucesso.",
-      },
       queues: {
-        title: "Sectores",
+        title: "Linhas",
+        notifications: {
+          queueDeleted: "El sector ha sido eliminado.",
+        },
         table: {
-          name: "Nome",
-          color: "Cor",
-          greeting: "Mensagem de saudação",
-          actions: "Ações",
+          name: "Nombre",
+          color: "Color",
+          greeting: "Mensaje de saludo",
+          actions: "Comportamiento",
+          startWork: "Apertura",
+          endWork: "Cierre",
         },
         buttons: {
-          add: "Adicionar um novo Setor",
-        },
-        confirmationModal: {
-          deleteTitle: "Excluir",
-          deleteMessage:
-            "Você tem certeza? Essa ação não pode ser revertida! Os conversas dessa fila continuarão existindo, mas não terão mais nenhuma fila atribuída.",
-        },
-      },
-	  bots: {
-        title: "Comandos",
-        table: {
-          commandBot: "Comando",
-          commandType: "Tipo",
-          showMessage: "Mensagem de saudação",
-          userId: "Atendente",
-          queueId: "Setor",
-          actions: "Ações",
-        },
-        buttons: {
-          add: "Adicionar comando",
-          hierarchy: "Fluxograma",
+          add: "Agregar cola",
         },
         confirmationModal: {
           deleteTitle: "Eliminar",
           deleteMessage:
             "¿Estás seguro? ¡Esta acción no se puede revertir! Los tickets en esa cola seguirán existiendo, pero ya no tendrán ninguna cola asignada.",
         },
-        messages: {
-          saved: "Comando salvo com sucesso!",
-          deleted: "Comando deletado com sucesso!",
-        },
-        hierarchy: {
-          title: "Fluxograma do SEU Chatbot"
-        }
       },
       queueSelect: {
-        inputLabel: "Sectores",
+        inputLabel: "Linhas",
       },
       quickAnswers: {
         title: "Respuestas rápidas",
@@ -461,7 +362,6 @@ const messages = {
         title: "Usuarios",
         table: {
           name: "Nombre",
-          status: "Estado",
           email: "Correo Electrónico",
           profile: "Perfil",
           whatsapp: "Conexión estándar",
@@ -477,27 +377,7 @@ const messages = {
           deleteTitle: "Borrar",
           deleteMessage:
             "Toda la información del usuario se perderá. Los tickets abiertos de los usuarios se moverán a la cola.",
-          },
         },
-        tags: {
-          title: "Tags",
-          confirmationModal: {
-            deleteTitle:
-              "Você tem certeza que quer excluir esta Tag?",
-            deleteMessage: "Esta ação não pode ser revertida.",
-          },
-          table: {
-            name: "Nome",
-            color: "Cor",
-            tickets: "Registros Tagdos",
-            actions: "Ações",
-          },
-          buttons: {
-            add: "Nova Tag",
-        },
-        toasts: {
-          deleted: "Tag excluído com sucesso.",
-        }
       },
       settings: {
         success: "Configuración guardada satisfactoriamente.",
@@ -506,41 +386,56 @@ const messages = {
           userCreation: {
             name: "Creación de usuarios",
             options: {
-              enabled: "Activado",
-              disabled: "Desativado",
-            },
-          },
-          timeCreateNewTicket: {
-            name: "Mensaje de bienvenida después",
-            note: "Selecciona el tiempo que tardará en abrir un nuevo ticket si el cliente te vuelve a contactar",
-            options: {
-              "10": "10 Segundos",
-              "30": "30 Segundos",
-              "60": "1 minuto",
-              "300": "5 minutos",
-              "1800" : "30 minutos",
-              "3600" : "1 hora",
-              "7200" : "2 horas",
-              "21600" : "6 horas",
-              "43200" : "12 horas",
-              "86400" : "24 horas",
-              "172800" : "48 horas",
-            },
-          },
-          call: {
-            name: "Aceptar llamadas",
-            options: {
-              enabled: "Activado",
-              disabled: "Desativado",
-            },
-          },
-          CheckMsgIsGroup: {
-            name: "Ignorar Mensagens de Grupos",
-            options: {
               enabled: "Habilitado",
               disabled: "Deshabilitado",
             },
           },
+        },
+      },
+      CheckMsgIsGroup: {
+        name: "Ignorar Mensajes Grupales",
+        options: {
+          enabled: "Habilitado",
+          disabled: "Deshabilitado",
+        },
+      },
+      sideMenu: {
+        name: "Menú lateral de inicio",
+        note: "Si está habilitado, el menú lateral comenzará cerrado",
+        options: {
+          enabled: "Abrir",
+          disabled: "Cerrado",
+        },
+      },
+      closeTicketApi: {
+        name: "Cerrar ticket enviado API",
+        note: "Cierra automáticamente el ticket cuando se envía a través de API",
+        options: {
+          enabled: "Habilitado",
+          disabled: "Deshabilitado",
+        },
+      },
+      darkMode: {
+        name: "Habilitar modo oscuro",
+        note: "Cambiar entre el modo claro y el modo oscuro",
+        options: {
+          enabled: "Habilitado",
+          disabled: "Deshabilitado",
+        },
+    },
+      timeCreateNewTicket: {
+        name: "Crear nuevo ticket después",
+        note: "Selecciona el tiempo que tardará en abrir un nuevo ticket si el cliente te vuelve a contactar",
+        options: {
+          "10": "10 Segundos",
+          "30": "30 Segundos",
+          "60": "1 minuto",
+          "300": "5 minutos",
+          "1800" : "30 minutos",
+          "3600" : "1 hora",
+          "7200" : "2 horas",
+          "21600" : "6 horas",
+          "43200" : "12 horas",
         },
       },
       messagesList: {
@@ -589,48 +484,39 @@ const messages = {
       },
       messageOptionsMenu: {
         delete: "Borrar",
-        reply: "Responder",
+        reply: "Aceitar",
         confirmationModal: {
           title: "¿Borrar mensaje?",
           message: "Esta acción no puede ser revertida.",
         },
       },
       backendErrors: {
-        ERR_NO_OTHER_WHATSAPP:
-          "Debe haber al menos una conexión de WhatsApp predeterminada.",
-        ERR_NO_DEF_WAPP_FOUND:
-          "No se encontró WhatsApp predeterminado. Verifique la página de conexiones.",
-        ERR_WAPP_NOT_INITIALIZED:
-          "Esta sesión de WhatsApp no ​​está inicializada. Verifique la página de conexiones.",
-        ERR_WAPP_CHECK_CONTACT:
-          "No se pudo verificar el contacto de WhatsApp. Verifique la página de conexiones.",
+        ERR_NO_OTHER_WHATSAPP: "Debe haber al menos una conexión de WhatsApp predeterminada.",
+        ERR_NO_DEF_WAPP_FOUND: "No se encontró WhatsApp predeterminado. Verifique la página de conexiones.",
+        ERR_WAPP_NOT_INITIALIZED: "Esta sesión de WhatsApp no ​​está inicializada. Verifique la página de conexiones.",
+        ERR_WAPP_CHECK_CONTACT: "No se pudo verificar el contacto de WhatsApp. Verifique la página de conexiones.",
         ERR_WAPP_INVALID_CONTACT: "Este no es un número de whatsapp válido.",
-        ERR_WAPP_DOWNLOAD_MEDIA:
-          "No se pudieron descargar los medios de WhatsApp. Verifique la página de conexiones.",
+        ERR_WAPP_DOWNLOAD_MEDIA: "No se pudieron descargar los medios de WhatsApp. Verifique la página de conexiones.",
         ERR_INVALID_CREDENTIALS: "Error de autenticación. Vuelva a intentarlo.",
-        ERR_SENDING_WAPP_MSG:
-          "Error al enviar el mensaje de WhatsApp. Verifique la página de conexiones.",
+        ERR_SENDING_WAPP_MSG: "Error al enviar el mensaje de WhatsApp. Verifique la página de conexiones.",
         ERR_DELETE_WAPP_MSG: "No se pudo borrar el mensaje de WhatsApp.",
         ERR_OTHER_OPEN_TICKET: "Ya hay un ticket abierto para este contacto.",
         ERR_SESSION_EXPIRED: "Sesión caducada. Inicie sesión.",
-        ERR_USER_CREATION_DISABLED:
-          "La creación de usuarios fue deshabilitada por el administrador.",
+        ERR_USER_CREATION_DISABLED: "La creación de usuarios fue deshabilitada por el administrador.",
         ERR_NO_PERMISSION: "No tienes permiso para acceder a este recurso.",
         ERR_DUPLICATED_CONTACT: "Ya existe un contacto con este número.",
-        ERR_NO_SETTING_FOUND:
-          "No se encontró ninguna configuración con este ID.",
+        ERR_NO_SETTING_FOUND: "No se encontró ninguna configuración con este ID.",
         ERR_NO_CONTACT_FOUND: "No se encontró ningún contacto con este ID.",
         ERR_NO_TICKET_FOUND: "No se encontró ningún ticket con este ID.",
         ERR_NO_USER_FOUND: "No se encontró ningún usuario con este ID.",
         ERR_NO_WAPP_FOUND: "No se encontró WhatsApp con este ID.",
         ERR_CREATING_MESSAGE: "Error al crear el mensaje en la base de datos.",
         ERR_CREATING_TICKET: "Error al crear el ticket en la base de datos.",
-        ERR_FETCH_WAPP_MSG:
-          "Error al obtener el mensaje en WhtasApp, tal vez sea demasiado antiguo.",
-        ERR_QUEUE_COLOR_ALREADY_EXISTS:
-          "Este color ya está en uso, elija otro.",
-        ERR_WAPP_GREETING_REQUIRED:
-          "El mensaje de saludo es obligatorio cuando hay más de una cola.",
+        ERR_FETCH_WAPP_MSG: "Error al obtener el mensaje en WhtasApp, tal vez sea demasiado antiguo.",
+        ERR_QUEUE_COLOR_ALREADY_EXISTS: "Este color ya está en uso, elija otro.",
+        ERR_WAPP_GREETING_REQUIRED: "El mensaje de saludo es obligatorio cuando hay más de una cola.",
+        ERR_USER_CREATION_COUNT: "Se alcanzó el límite de usuarios; para cambiar, comuníquese con el soporte.",
+        ERR_CONNECTION_CREATION_COUNT: "Se alcanzó el límite de conexión, para cambiar, comuníquese con el soporte.",
       },
     },
   },

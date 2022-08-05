@@ -10,9 +10,6 @@ import DeleteWhatsAppMessage from "../services/WbotServices/DeleteWhatsAppMessag
 import SendWhatsAppMedia from "../services/WbotServices/SendWhatsAppMedia";
 import SendWhatsAppMessage from "../services/WbotServices/SendWhatsAppMessage";
 
-import sendFaceMedia from "../services/FacebookServices/sendFacebookMessageMedia";
-import sendFaceMessage from "../services/FacebookServices/sendFacebookMessage";
-
 type IndexQuery = {
   pageNumber: string;
 };
@@ -50,24 +47,11 @@ export const store = async (req: Request, res: Response): Promise<Response> => {
   if (medias) {
     await Promise.all(
       medias.map(async (media: Express.Multer.File) => {
-        if (ticket.channel === "whatsapp") {
-          await SendWhatsAppMedia({ media, ticket });
-        }
-
-        if (ticket.channel === "facebook" || ticket.channel === "instagram") {
-          await sendFaceMedia({ media, ticket });
-        }
+        await SendWhatsAppMedia({ media, ticket });
       })
     );
   } else {
-    if (ticket.channel === "whatsapp") {
-      await SendWhatsAppMessage({ body, ticket, quotedMsg });
-    }
-
-    if (ticket.channel === "facebook" || ticket.channel === "instagram") {
-      console.log("facebook");
-      await sendFaceMessage({ body, ticket, quotedMsg });
-    }
+    await SendWhatsAppMessage({ body, ticket, quotedMsg });
   }
 
   return res.send();
