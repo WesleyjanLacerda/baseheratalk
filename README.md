@@ -20,5 +20,6 @@ Vá para Frontend edite o arquivo .env:
     ou npm i material-ui-color
     ou npm install @dabeng/react-orgchart
     ou npm install eslint-plugin-react-hooks --save-dev
+    ou npm i eslint-plugin-react-hooks
 
     https://github.com/pedroslopez/whatsapp-web.js/pull/1571/commits/560010057fc43dcf7fc306b90a5d3e7adb7246b1
