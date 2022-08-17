@@ -9,6 +9,7 @@ Vá para a pasta backend e edite o arquivo .env:
     npm start
 
     Erro no npm run buil: npm install @adiwajshing/baileys@4.3.0
+    ou npm install @types/swagger-ui-express
 
 Vá para Frontend edite o arquivo .env:
 
